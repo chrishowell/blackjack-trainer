@@ -199,10 +199,17 @@
   .chart-note{font-size:10.5px;color:rgba(244,236,216,.45);text-align:center;margin-top:10px;line-height:1.55;letter-spacing:.03em}
   #count-rules{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
   #count-rules[hidden]{display:none}
-  .cr-lead{font-size:11.5px;color:rgba(244,236,216,.7);text-align:center;margin-bottom:12px;line-height:1.6}
-  .cr-grid{display:flex;flex-wrap:wrap;gap:7px 16px;justify-content:center;font-size:11.5px;color:rgba(244,236,216,.8);letter-spacing:.02em}
-  .cr-grid b{color:var(--brass-lite);font-weight:600}
-  .cr-grid i{color:rgba(244,236,216,.5);font-style:normal;font-size:10.5px}
+  .cr-lead{font-size:11.5px;color:rgba(244,236,216,.7);text-align:center;margin-bottom:10px;line-height:1.6}
+  .cr-legend{font-size:10.5px;color:rgba(244,236,216,.5);text-align:center;margin-bottom:12px;line-height:1.6;letter-spacing:.02em}
+  .cr-legend b{color:var(--brass);font-weight:600}.cr-legend i{color:rgba(244,236,216,.7);font-style:normal}
+  .cr-section{margin-top:14px}
+  .cr-section h5{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);font-weight:500;margin:0 0 8px 2px}
+  .cr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}
+  .cr-item{background:rgba(6,26,20,.45);border:1px solid var(--line);border-radius:8px;padding:7px 4px 8px;text-align:center}
+  .cr-hand{display:block;font-size:11.5px;color:var(--cream);font-weight:500}
+  .cr-play{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;margin-top:4px}
+  .cr-thr{display:inline-block;font-size:10px;color:rgba(244,236,216,.45);margin-left:6px}
+  .cr-play.cell-S{color:#bfe6ce}.cr-play.cell-H{color:#f0c2bd}.cr-play.cell-D{color:#f1dca0}.cr-play.cell-P{color:#d2e3f6}
   .cr-foot{font-size:10px;color:rgba(244,236,216,.4);text-align:center;margin-top:12px;letter-spacing:.03em}
   .footer-note{text-align:center;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,236,216,.32);margin-top:34px}
 
@@ -570,15 +577,21 @@ function renderCountRules(){
   if(!rules.showCounts){blk.hidden=true;blk.innerHTML='';return;}
   const dl=v=>v===11?'A':v===10?'T':v;
   const hand=e=>e.pair?(e.pair===10?'T,T':e.pair+','+e.pair):e.hard;
-  const items=HILO_INDEX.map(e=>{
-    const thr=e.dir==='>='?('TC ≥ '+(e.idx>0?'+':'')+e.idx):('TC < '+(e.idx>0?'+':'')+e.idx);
-    return '<span>'+hand(e)+' v '+dl(e.dl)+' → <b>'+e.act.toUpperCase()+'</b> <i>'+thr+'</i></span>';
-  }).join('');
+  const actCls={stand:'cell-S',hit:'cell-H',double:'cell-D',split:'cell-P'};
+  const card=e=>{
+    const thr=((e.dir==='>='?'≥ ':'< ')+((e.idx>0?'+':'')+e.idx)).replace('-','−');
+    return '<div class="cr-item"><span class="cr-hand">'+hand(e)+' v '+dl(e.dl)+'</span>'+
+      '<span class="cr-play '+actCls[e.act]+'">'+e.act.toUpperCase()+'</span>'+
+      '<span class="cr-thr">'+thr+'</span></div>';
+  };
+  const high=HILO_INDEX.filter(e=>e.dir==='>=').map(card).join('');
+  const low=HILO_INDEX.filter(e=>e.dir==='<').map(card).join('');
   blk.hidden=false;
   blk.innerHTML='<h4>Hi-Lo Count Plays</h4>'+
     '<p class="cr-lead"><b>Bet:</b> TC ≤ +1 → $5 · +2 to +3 → $10 · ≥ +4 → $25.&nbsp;&nbsp;<b>Insurance:</b> take at TC ≥ +3.</p>'+
-    '<div class="cr-grid">'+items+'</div>'+
-    '<p class="cr-foot">Deviate from the chart above only once the true count crosses the listed threshold.</p>';
+    '<p class="cr-legend">Read each as <i>your hand</i> v <i>dealer up-card</i> → the play once the true count reaches the threshold; otherwise follow the chart above. <b>T</b> = ten-value card (10/J/Q/K), <b>A</b> = ace, <b>T,T</b> = pair of tens. Totals are hard hands.</p>'+
+    '<div class="cr-section"><h5>When the count is high — deviate at the threshold or above</h5><div class="cr-grid">'+high+'</div></div>'+
+    '<div class="cr-section"><h5>When the count is low — deviate below the threshold</h5><div class="cr-grid">'+low+'</div></div>';
 }
 function chartCellFor(h){
   const d=S.dealer[0].value;const col=DEALER_COLS[d===11?9:d-2];
