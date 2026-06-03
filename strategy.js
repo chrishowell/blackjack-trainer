@@ -9,7 +9,7 @@
  *   - h17       dealer hits soft 17 (false = stands, S17)
  *   - das       double after split allowed
  *   - surrender late surrender available
- *   - decks/bet/hint/scrollMiss/showChart  used by the app only (not strategy)
+ *   - decks/bet/hint/scrollMiss/showChart/showCounts  used by the app only (not strategy)
  * ============================================================ */
 (function (root, factory) {
   const api = factory();
@@ -17,7 +17,7 @@
   else root.BJ = api;                                                     // browser global
 })(typeof self !== 'undefined' ? self : this, function () {
 
-  const DEFAULT_RULES = { h17:false, das:true, surrender:false, decks:6, bet:10, hint:true, scrollMiss:true, showChart:true };
+  const DEFAULT_RULES = { h17:false, das:true, surrender:false, decks:6, bet:10, hint:true, scrollMiss:true, showChart:true, showCounts:true };
   const rules = Object.assign({}, DEFAULT_RULES);   // live, mutated by the app's options panel
 
   function handValue(cards){

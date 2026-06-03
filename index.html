@@ -54,6 +54,25 @@
   .stat-info[hidden]{display:none}
   @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.22);color:var(--brass-lite)}100%{transform:scale(1)}}
 
+  .count-row{margin:0 0 16px}
+  .count-row[hidden]{display:none}
+  .count-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}
+  .count-head .lbl{font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass);opacity:.8}
+  .count-btn{background:transparent;color:var(--brass);border:1px solid var(--brass);border-radius:7px;padding:4px 14px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:background .18s}
+  .count-btn:hover{background:rgba(201,164,92,.12)}
+  .count-btn.on{background:linear-gradient(180deg,var(--brass-lite),var(--brass));color:#26200f;border-color:transparent}
+  .count-cells{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .count{background:rgba(6,26,20,.5);padding:7px 4px;text-align:center}
+  .count .cn{display:block;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--brass);opacity:.8;white-space:nowrap}
+  .count{cursor:pointer;outline:none}
+  .count .cv{display:block;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:19px;line-height:1.1;color:var(--cream);margin-top:2px}
+  .count .cv.hidden{color:rgba(244,236,216,.28)}
+  .count .cv.flash{animation:pop .45s ease}
+  .count .ct{display:block;font-size:8px;letter-spacing:.06em;color:var(--brass-lite);opacity:.85;min-height:9px;margin-top:1px}
+  .count.open,.count:focus-visible{box-shadow:inset 0 0 0 1px var(--brass-lite),0 0 12px -4px var(--brass)}
+  .count .info-i{width:9px;height:9px;font-size:7px;opacity:.6;vertical-align:middle}
+  #count-info{margin:8px 0 0}
+
   .rank{display:flex;align-items:center;gap:12px;margin:-6px 0 24px;font-size:12px;letter-spacing:.12em}
   .rank .label{color:var(--brass);text-transform:uppercase;font-weight:500;white-space:nowrap}
   .rank .track{flex:1;height:6px;border-radius:6px;background:rgba(0,0,0,.35);overflow:hidden;border:1px solid var(--line)}
@@ -173,6 +192,9 @@
     .subtitle{letter-spacing:.34em;font-size:10px}
     .rule{margin-top:8px}
     .stats{grid-template-columns:repeat(6,1fr);margin:8px 0 8px}
+    .count-row{margin-bottom:10px}
+    .count-cells{grid-template-columns:repeat(3,1fr)}
+    .count .cv{font-size:16px}
     .stat{padding:5px 3px}
     .stat .k{font-size:6.5px;letter-spacing:.1em}
     .stat .v{font-size:14px}
@@ -238,6 +260,10 @@
         <span class="seg" data-opt="showChart"><button data-val="1" class="on">Show</button><button data-val="0">Hide</button></span>
       </div>
       <div class="opt-row">
+        <span class="opt-label">Card counting row<small>Practice running counts across systems</small></span>
+        <span class="seg" data-opt="showCounts"><button data-val="1" class="on">Show</button><button data-val="0">Hide</button></span>
+      </div>
+      <div class="opt-row">
         <span class="opt-label">Scroll to strategy on mistake<small>Reveals hidden tables until your next action</small></span>
         <span class="seg" data-opt="scrollMiss"><button data-val="1" class="on">On</button><button data-val="0">Off</button></span>
       </div>
@@ -259,6 +285,19 @@
     <div class="stat" data-info="cards"><div class="k">Cards <span class="info-i">i</span></div><div class="v" id="s-cards">0/312</div></div>
   </div>
   <div class="stat-info" id="stat-info" hidden></div>
+
+  <div class="count-row" id="count-row">
+    <div class="count-head"><span class="lbl">Card counting · tap a system to learn it</span><button class="count-btn" id="btn-count">Show</button></div>
+    <div class="count-cells">
+      <div class="count" data-cinfo="hilo"><span class="cn">Hi-Lo <span class="info-i">i</span></span><span class="cv hidden" id="c-hilo">?</span><span class="ct" id="t-hilo"></span></div>
+      <div class="count" data-cinfo="ko"><span class="cn">KO <span class="info-i">i</span></span><span class="cv hidden" id="c-ko">?</span><span class="ct" id="t-ko"></span></div>
+      <div class="count" data-cinfo="hiopt1"><span class="cn">Hi-Opt I <span class="info-i">i</span></span><span class="cv hidden" id="c-hiopt1">?</span><span class="ct" id="t-hiopt1"></span></div>
+      <div class="count" data-cinfo="hiopt2"><span class="cn">Hi-Opt II <span class="info-i">i</span></span><span class="cv hidden" id="c-hiopt2">?</span><span class="ct" id="t-hiopt2"></span></div>
+      <div class="count" data-cinfo="omega2"><span class="cn">Omega II <span class="info-i">i</span></span><span class="cv hidden" id="c-omega2">?</span><span class="ct" id="t-omega2"></span></div>
+      <div class="count" data-cinfo="zen"><span class="cn">Zen <span class="info-i">i</span></span><span class="cv hidden" id="c-zen">?</span><span class="ct" id="t-zen"></span></div>
+    </div>
+    <div class="stat-info" id="count-info" hidden></div>
+  </div>
 
   <div class="rank">
     <span class="label" id="rank-label">Novice</span>
@@ -316,15 +355,58 @@ const RANKS=[{r:'A',v:11},{r:'2',v:2},{r:'3',v:3},{r:'4',v:4},{r:'5',v:5},{r:'6'
 const SUITS=['♠','♥','♦','♣'];
 const DEALER_COLS=['2','3','4','5','6','7','8','9','10','A'];
 const MAX_HANDS=4;
+// Card-counting systems. tags keyed by card value (A=11, tens/faces=10). App-only; no effect on strategy.
+// bal = balanced (running count converts to a true count); KO is unbalanced.
+const COUNT_SYSTEMS=[
+  {key:'hilo',  name:'Hi-Lo',   bal:true,  tags:{2:1,3:1,4:1,5:1,6:1,7:0,8:0,9:0,10:-1,11:-1},
+   info:'<b>Hi-Lo</b> — level 1, balanced. 2–6 = +1, 7–9 = 0, 10–A = −1. The most popular count. Add each card\'s value as it\'s shown to get the <b>running count</b>, then divide by the decks remaining for the <b>true count</b> — raise your bet and deviate from basic strategy as it climbs.'},
+  {key:'ko',    name:'KO',      bal:false, tags:{2:1,3:1,4:1,5:1,6:1,7:1,8:0,9:0,10:-1,11:-1},
+   info:'<b>KO (Knock-Out)</b> — level 1, unbalanced. 2–7 = +1, 8–9 = 0, 10–A = −1. Because it\'s unbalanced you act on the <b>running count</b> directly against a fixed key count — no true-count division. Easier to run, slightly less precise.'},
+  {key:'hiopt1',name:'Hi-Opt I',bal:true,  tags:{2:0,3:1,4:1,5:1,6:1,7:0,8:0,9:0,10:-1,11:0},
+   info:'<b>Hi-Opt I</b> — level 1, balanced. 3–6 = +1, 10 = −1, everything else 0 (aces neutral). Keep a separate <i>side count</i> of aces for betting. Convert running → true count like Hi-Lo.'},
+  {key:'hiopt2',name:'Hi-Opt II',bal:true, tags:{2:1,3:1,4:2,5:2,6:1,7:1,8:0,9:0,10:-2,11:0},
+   info:'<b>Hi-Opt II</b> — level 2, balanced. 2,3,6,7 = +1, 4,5 = +2, 10 = −2, others 0. More powerful but harder to run; side-count aces. Use the true count for bets and deviations.'},
+  {key:'omega2',name:'Omega II',bal:true,  tags:{2:1,3:1,4:2,5:2,6:2,7:1,8:0,9:-1,10:-2,11:0},
+   info:'<b>Omega II</b> — level 2, balanced. 2,3,7 = +1, 4,5,6 = +2, 9 = −1, 10 = −2, 8 and A = 0. Strong for playing decisions. Track the true count; many players side-count aces too.'},
+  {key:'zen',   name:'Zen',     bal:true,  tags:{2:1,3:1,4:2,5:2,6:2,7:1,8:0,9:0,10:-2,11:-1},
+   info:'<b>Zen Count</b> — level 2, balanced. 2,3,7 = +1, 4,5,6 = +2, 10 = −2, A = −1, 8,9 = 0. Balances betting and playing accuracy without a separate ace count. Use the true count.'}
+];
+let counts={};let countedCards=new Set();let countsRevealed=false;
+function resetCounts(){counts={};for(const sys of COUNT_SYSTEMS)counts[sys.key]=0;countedCards=new Set();countsRevealed=false;}
 
 let shoe=[];let pendingShuffle=false;let tempChart=false;
 function buildShoe(){shoe=[];for(let d=0;d<rules.decks;d++)for(const s of SUITS)for(const rk of RANKS)shoe.push({rank:rk.r,value:rk.v,suit:s,red:(s==='♥'||s==='♦')});
-  for(let i=shoe.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shoe[i],shoe[j]]=[shoe[j],shoe[i]];}}
+  for(let i=shoe.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shoe[i],shoe[j]]=[shoe[j],shoe[i]];}
+  resetCounts();}
 function reshuffleThreshold(){return Math.floor(rules.decks*52*0.25);}
 function shoeSize(){return rules.decks*52;}
 function cardsDealt(){return shoeSize()-shoe.length;}
 function setCardStat(){$('s-cards').textContent=cardsDealt()+'/'+shoeSize();}
 function draw(){if(shoe.length<reshuffleThreshold()){buildShoe();pendingShuffle=true;}return shoe.pop();}
+/* Card counting: tally each card once, as it becomes visible to the player. */
+function updateCounts(reveal){
+  const seen=[];
+  for(const h of S.hands)for(const c of h.cards)seen.push(c);
+  if(S.dealer.length){if(reveal){for(const c of S.dealer)seen.push(c);}else seen.push(S.dealer[0]);}
+  for(const c of seen){if(c&&!countedCards.has(c)){countedCards.add(c);for(const sys of COUNT_SYSTEMS)counts[sys.key]+=(sys.tags[c.value]||0);}}
+}
+function renderCounts(flash){
+  const decksRem=shoe.length/52;
+  for(const sys of COUNT_SYSTEMS){
+    const el=$('c-'+sys.key),tel=$('t-'+sys.key);if(!el)continue;
+    const n=counts[sys.key];
+    el.textContent=countsRevealed?((n>0?'+':'')+n):'?';
+    el.classList.toggle('hidden',!countsRevealed);
+    if(tel){
+      if(countsRevealed&&sys.bal&&decksRem>0){const tc=Math.round((n/decksRem)*10)/10;tel.textContent='TC '+(tc>0?'+':'')+tc;}
+      else tel.textContent='';
+    }
+    if(flash&&countsRevealed){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
+  }
+  $('btn-count').textContent=countsRevealed?'Hide':'Show';
+  $('btn-count').classList.toggle('on',countsRevealed);
+}
+function updateCountRowVisibility(){$('count-row').hidden=!rules.showCounts;}
 
 /* ============================================================ State */
 const S={hands:[],active:0,dealer:[],phase:'idle',bank:500,score:0,correct:0,total:0,streak:0,best:0,baseBet:10,roundPerfect:true};
@@ -408,7 +490,7 @@ function showHint(){
   feedback('<span class="tag">Hint</span> — '+prefix+'optimal play is <b>'+opt.toUpperCase()+'</b> on '+describe(h.cards,d)+'.','neutral');
 }
 function result(html,kind){const r=$('result');r.className='result '+(kind||'');r.innerHTML=html||'';}
-function render(reveal){renderDealer(!!reveal);renderPlayer();setButtons();highlight();setCardStat();}
+function render(reveal){renderDealer(!!reveal);renderPlayer();setButtons();highlight();setCardStat();updateCounts(!!reveal);renderCounts();}
 
 /* ============================================================ Strategy chart */
 function colVal(c){return c==='A'?11:parseInt(c,10);}
@@ -511,7 +593,7 @@ function startRound(){
     if(pBJ&&dBJ){h.outcome='push';feedback('Both dealt naturals.','neutral');result('Push','push');}
     else if(pBJ){h.outcome='blackjack';S.bank+=Math.round(S.baseBet*1.5);feedback('Natural blackjack — no decision needed.','neutral');result('Blackjack!  +'+Math.round(S.baseBet*1.5),'win');}
     else{h.outcome='lose';S.bank-=S.baseBet;feedback('Dealer was dealt a natural.','neutral');result('Dealer Blackjack  −'+S.baseBet,'lose');}
-    renderStats(shuffled?['s-bank','s-cards']:['s-bank']);render(true);save();return;
+    renderStats(shuffled?['s-bank','s-cards']:['s-bank']);render(dBJ);save();return;
   }
   feedback(shuffled?'<span style="color:var(--brass-lite)">✦ Shoe reshuffled</span>':'','neutral');
   renderStats(shuffled?['s-cards']:[]);render(false);
@@ -540,7 +622,7 @@ function onSplit(){const h=activeHand();if(!canSplitVal(h))return;score('split',
   S.hands.splice(S.active,1,h1,h2);proceed();}
 function onSurrender(){const h=activeHand();if(!canSurrenderVal(h))return;score('surrender',h);
   h.outcome='surrender';h.done=true;S.phase='done';S.bank-=Math.round(h.bet/2);
-  result('Surrender  −'+Math.round(h.bet/2),'lose');renderStats(['s-bank']);render(true);save();}
+  result('Surrender  −'+Math.round(h.bet/2),'lose');renderStats(['s-bank']);render(false);save();}
 function dealerShouldHit(){const v=handValue(S.dealer);if(v.total<17)return true;if(v.total===17&&v.soft&&rules.h17)return true;return false;}
 function dealerPlayAndResolve(){
   S.phase='done';
@@ -559,7 +641,7 @@ function dealerPlayAndResolve(){
   const sign=net>0?'  +'+net:(net<0?'  −'+Math.abs(net):'');
   const kind=net>0?'win':(net<0?'lose':'push');
   result((net>0?'Round Won':net<0?'Round Lost':'Push')+sign,kind);
-  renderStats(['s-bank']);render(true);save();
+  renderStats(['s-bank']);render(anyAlive);save();
 }
 
 /* ============================================================ Persistence (localStorage) */
@@ -571,7 +653,7 @@ function save(){
   if(!storageOK)return;
   try{localStorage.setItem(SAVE_KEY,JSON.stringify({
     stats:{bank:S.bank,score:S.score,correct:S.correct,total:S.total,streak:S.streak,best:S.best},
-    rules:{h17:rules.h17,das:rules.das,surrender:rules.surrender,decks:rules.decks,bet:rules.bet,hint:rules.hint,scrollMiss:rules.scrollMiss,showChart:rules.showChart}
+    rules:{h17:rules.h17,das:rules.das,surrender:rules.surrender,decks:rules.decks,bet:rules.bet,hint:rules.hint,scrollMiss:rules.scrollMiss,showChart:rules.showChart,showCounts:rules.showCounts}
   }));}catch(e){}
 }
 function load(){
@@ -581,7 +663,7 @@ function load(){
     const d=JSON.parse(raw);
     if(d.stats){for(const f of ['bank','score','correct','total','streak','best'])if(typeof d.stats[f]==='number')S[f]=d.stats[f];}
     if(d.rules){
-      for(const f of ['h17','das','surrender','hint','scrollMiss','showChart'])if(typeof d.rules[f]==='boolean')rules[f]=d.rules[f];
+      for(const f of ['h17','das','surrender','hint','scrollMiss','showChart','showCounts'])if(typeof d.rules[f]==='boolean')rules[f]=d.rules[f];
       if([4,6,8].includes(d.rules.decks))rules.decks=d.rules.decks;
       if([5,10,25].includes(d.rules.bet))rules.bet=d.rules.bet;
     }
@@ -614,6 +696,7 @@ function applyRules(){
   highlight();
   setCardStat();
   updateChartVisibility();
+  updateCountRowVisibility();renderCounts();
   save();
 }
 document.querySelectorAll('.seg').forEach(seg=>{
@@ -637,7 +720,7 @@ $('btn-clear').addEventListener('click',()=>{
   S.bank=500;S.score=0;S.correct=0;S.total=0;S.streak=0;S.best=0;
   Object.assign(rules,DEFAULT_RULES);S.baseBet=rules.bet;
   tempChart=false;syncOptionUI();buildShoe();buildCharts();
-  renderStats(['s-bank','s-score','s-acc','s-streak','s-best']);render(false);setButtons();updateChartVisibility();updateSaveStatus();
+  renderStats(['s-bank','s-score','s-acc','s-streak','s-best']);render(false);setButtons();updateChartVisibility();updateCountRowVisibility();updateSaveStatus();
 });
 
 /* ============================================================ Wire up */
@@ -648,6 +731,7 @@ $('btn-double').addEventListener('click',onDouble);
 $('btn-split').addEventListener('click',onSplit);
 $('btn-surrender').addEventListener('click',onSurrender);
 $('btn-hint').addEventListener('click',showHint);
+$('btn-count').addEventListener('click',()=>{countsRevealed=!countsRevealed;renderCounts(true);});
 
 function toggleOptions(force){
   const p=$('options-panel'),open=(force===undefined)?!p.classList.contains('open'):force;
@@ -686,9 +770,33 @@ document.addEventListener('click',e=>{
   if(!box.hasAttribute('hidden')&&!box.contains(e.target)&&!e.target.closest('.stat[data-info]'))closeStatInfo();
 });
 
+let openCount=null;
+function showCountInfo(key,el){
+  const sys=COUNT_SYSTEMS.find(s=>s.key===key);if(!sys)return;
+  if(openCount===key){closeCountInfo();return;}
+  closeCountInfo();
+  const box=$('count-info');box.innerHTML=sys.info;box.removeAttribute('hidden');
+  el.classList.add('open');openCount=key;
+}
+function closeCountInfo(){
+  $('count-info').setAttribute('hidden','');
+  document.querySelectorAll('.count.open').forEach(c=>c.classList.remove('open'));
+  openCount=null;
+}
+document.querySelectorAll('.count[data-cinfo]').forEach(el=>{
+  el.setAttribute('role','button');el.setAttribute('tabindex','0');
+  const key=el.dataset.cinfo;
+  el.addEventListener('click',e=>{e.stopPropagation();showCountInfo(key,el);});
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();showCountInfo(key,el);}});
+});
+document.addEventListener('click',e=>{
+  const box=$('count-info');
+  if(!box.hasAttribute('hidden')&&!box.contains(e.target)&&!e.target.closest('.count[data-cinfo]'))closeCountInfo();
+});
+
 document.addEventListener('keydown',e=>{
   if(e.repeat)return;const k=e.key.toLowerCase();
-  if(k==='escape'){toggleOptions(false);closeStatInfo();return;}
+  if(k==='escape'){toggleOptions(false);closeStatInfo();closeCountInfo();return;}
   if(k==='h')onHit();else if(k==='s')onStand();else if(k==='d')onDouble();
   else if(k==='p')onSplit();else if(k==='r')onSurrender();else if(k==='?')showHint();
   else if(k===' '||k==='enter'){if(S.phase!=='player'){e.preventDefault();startRound();}}
@@ -697,9 +805,9 @@ document.addEventListener('keydown',e=>{
 load();
 // Resilience against version-skew (e.g. a cached older strategy.js): app-only
 // boolean flags must never be undefined, or their toggles highlight neither option.
-for(const f of ['hint','scrollMiss','showChart'])if(typeof rules[f]!=='boolean')rules[f]=DEFAULT_RULES[f]!==undefined?DEFAULT_RULES[f]:true;
+for(const f of ['hint','scrollMiss','showChart','showCounts'])if(typeof rules[f]!=='boolean')rules[f]=DEFAULT_RULES[f]!==undefined?DEFAULT_RULES[f]:true;
 syncOptionUI();updateSaveStatus();
-buildShoe();buildCharts();renderStats();render(false);setButtons();updateChartVisibility();
+buildShoe();buildCharts();renderStats();render(false);setButtons();updateChartVisibility();updateCountRowVisibility();
 </script>
 </body>
 </html>
