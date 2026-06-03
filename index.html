@@ -92,6 +92,8 @@
   .feedback .tag{font-weight:600;letter-spacing:.04em}
   .feedback.good{color:var(--good)}.feedback.bad{color:var(--bad)}.feedback.neutral{color:rgba(244,236,216,.7)}
   .feedback small{display:block;font-size:12px;opacity:.85;margin-top:3px;letter-spacing:.06em}
+  .broke-note{text-align:center;font-size:13px;letter-spacing:.04em;color:var(--bad);max-width:340px;line-height:1.5}
+  .broke-note .cog-ref{color:var(--brass);font-size:14px}
   .divider-result{display:flex;align-items:center;margin:20px 0}
   .divider-result .dline{flex:1;height:1px;background:var(--line)}
   .result{text-align:center;margin:0 16px;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:.02em;white-space:nowrap;color:var(--cream)}
@@ -107,8 +109,8 @@
   .btn:hover:not(:disabled){transform:translateY(-2px)}
   .btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 3px 0 -1px #6e5226,0 8px 16px -10px rgba(0,0,0,.7)}
   .btn:disabled{opacity:.3;cursor:not-allowed;filter:saturate(.4)}
-  .btn.hit{background:linear-gradient(180deg,#3d9670,#1f6e47 55%,#15452f);color:var(--cream);box-shadow:0 6px 0 -1px #0d2f1f,0 12px 22px -10px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.18);}
-  .btn.stand{background:linear-gradient(180deg,#d4756e,#b14a42 52%,#7a2a24);color:var(--cream);box-shadow:0 6px 0 -1px #4d1b16,0 12px 22px -10px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.18);}
+  .btn.hit{background:linear-gradient(180deg,#d4756e,#b14a42 52%,#7a2a24);color:var(--cream);box-shadow:0 6px 0 -1px #4d1b16,0 12px 22px -10px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.18);}
+  .btn.stand{background:linear-gradient(180deg,#3d9670,#1f6e47 55%,#15452f);color:var(--cream);box-shadow:0 6px 0 -1px #0d2f1f,0 12px 22px -10px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.18);}
   .btn.split{background:linear-gradient(180deg,#b9d2ef,var(--split) 55%,#4d77a8);color:#0b1f33;box-shadow:0 6px 0 -1px #2c4d72,0 12px 22px -10px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.4);}
   .btn.surrender{background:transparent;color:#e0b3dc;border:1px solid rgba(180,139,176,.6);box-shadow:none}
   .btn.surrender:hover:not(:disabled){background:rgba(180,139,176,.14);transform:translateY(-1px)}
@@ -276,6 +278,7 @@
       <button class="btn surrender" id="btn-surrender" disabled style="display:none"><span class="lbl">Surrender</span><span class="key">R</span></button>
       <button class="btn ghost" id="btn-hint" style="display:none"><span class="lbl">Hint</span><span class="key">?</span></button>
       <button class="btn deal" id="btn-deal"><span class="lbl">Deal</span><span class="key">Space</span></button>
+      <div class="broke-note" id="broke-note" style="display:none">Out of chips. Lower your bet or reset your stats in <span class="cog-ref">⚙</span> Options to buy back in.</div>
     </div>
   </div>
 
@@ -379,8 +382,10 @@ function setButtons(){
   show($('btn-split'),canSplitVal(h));
   show($('btn-surrender'),canSurrenderVal(h));
   show($('btn-hint'),live);
-  show($('btn-deal'),S.phase!=='player');
+  const broke=S.bank<S.baseBet;
+  show($('btn-deal'),S.phase!=='player'&&!broke);
   $('btn-deal').querySelector('.lbl').textContent=(S.phase==='done')?'Next Hand':'Deal';
+  $('broke-note').style.display=(S.phase!=='player'&&broke)?'':'none';
 }
 function feedback(html,kind){const f=$('feedback');f.className='feedback '+kind;f.innerHTML=html;}
 function showHint(){
@@ -474,6 +479,7 @@ function score(action,h){
 /* ============================================================ Flow */
 function newHand(cards,extra={}){return Object.assign({cards,bet:S.baseBet,done:false,doubled:false,fromSplit:false,fromAceSplit:false,outcome:null},extra);}
 function startRound(){
+  if(S.bank<S.baseBet){setButtons();return;}
   const h=newHand([draw(),draw()]);
   S.hands=[h];S.active=0;S.dealer=[draw(),draw()];S.phase='player';S.roundPerfect=true;result('','');
   document.querySelectorAll('td.hl-miss').forEach(e=>e.classList.remove('hl-miss'));
@@ -599,7 +605,7 @@ document.querySelectorAll('.seg').forEach(seg=>{
 $('btn-reset').addEventListener('click',()=>{
   S.bank=500;S.score=0;S.correct=0;S.total=0;S.streak=0;S.best=0;
   renderStats(['s-bank','s-score','s-acc','s-streak','s-best']);
-  save();
+  setButtons();save();
 });
 $('btn-clear').addEventListener('click',()=>{
   clearSaved();
