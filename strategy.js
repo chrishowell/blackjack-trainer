@@ -17,7 +17,7 @@
   else root.BJ = api;                                                     // browser global
 })(typeof self !== 'undefined' ? self : this, function () {
 
-  const DEFAULT_RULES = { h17:false, das:true, surrender:false, decks:6, bet:10, hint:true, scrollMiss:true, showChart:true, showCounts:true };
+  const DEFAULT_RULES = { h17:false, das:true, surrender:false, decks:6, bet:5, hint:true, scrollMiss:true, showChart:true, showCounts:true };
   const rules = Object.assign({}, DEFAULT_RULES);   // live, mutated by the app's options panel
 
   function handValue(cards){

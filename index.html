@@ -61,16 +61,13 @@
   .count-btn{background:transparent;color:var(--brass);border:1px solid var(--brass);border-radius:7px;padding:4px 14px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:background .18s}
   .count-btn:hover{background:rgba(201,164,92,.12)}
   .count-btn.on{background:linear-gradient(180deg,var(--brass-lite),var(--brass));color:#26200f;border-color:transparent}
-  .count-cells{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
-  .count{background:rgba(6,26,20,.5);padding:7px 4px;text-align:center}
-  .count .cn{display:block;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--brass);opacity:.8;white-space:nowrap}
-  .count{cursor:pointer;outline:none}
-  .count .cv{display:block;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:19px;line-height:1.1;color:var(--cream);margin-top:2px}
+  .count-cells{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .count{background:rgba(6,26,20,.5);padding:8px 4px;text-align:center}
+  .count .cn{display:block;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);opacity:.8}
+  .count .cv{display:block;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:22px;line-height:1.1;color:var(--cream);margin-top:2px}
   .count .cv.hidden{color:rgba(244,236,216,.28)}
   .count .cv.flash{animation:pop .45s ease}
-  .count .ct{display:block;font-size:8px;letter-spacing:.06em;color:var(--brass-lite);opacity:.85;min-height:9px;margin-top:1px}
-  .count.open,.count:focus-visible{box-shadow:inset 0 0 0 1px var(--brass-lite),0 0 12px -4px var(--brass)}
-  .count .info-i{width:9px;height:9px;font-size:7px;opacity:.6;vertical-align:middle}
+  .count-head .info-i{cursor:pointer}
   #count-info{margin:8px 0 0}
 
   .rank{display:flex;align-items:center;gap:12px;margin:-6px 0 24px;font-size:12px;letter-spacing:.12em}
@@ -115,6 +112,10 @@
   .feedback .tag{font-weight:600;letter-spacing:.04em}
   .feedback.good{color:var(--good)}.feedback.bad{color:var(--bad)}.feedback.neutral{color:rgba(244,236,216,.7)}
   .feedback small{display:block;font-size:12px;opacity:.85;margin-top:3px;letter-spacing:.06em}
+  .deviation{text-align:center;margin:2px 0 0;font-size:13px;letter-spacing:.02em;color:var(--split)}
+  .deviation[hidden]{display:none}
+  .deviation .tag{font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:10px;border:1px solid currentColor;border-radius:4px;padding:1px 5px;margin-right:6px}
+  .deviation b{color:var(--brass-lite)}
   .broke-note{text-align:center;font-size:13px;letter-spacing:.04em;color:var(--bad);max-width:340px;line-height:1.5}
   .broke-note .cog-ref{color:var(--brass);font-size:14px}
   .divider-result{display:flex;align-items:center;margin:20px 0}
@@ -122,8 +123,17 @@
   .result{text-align:center;margin:0 16px;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:.02em;white-space:nowrap;color:var(--cream)}
   .result:empty{margin:0}
   .result.win{color:var(--good)}.result.lose{color:var(--bad)}.result.push{color:var(--brass-lite)}
+  .result.bet{font-size:14px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--brass)}
 
-  .actions{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+  .actions{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:14px;flex-wrap:wrap}
+  .seg.chips{border:none;background:none;overflow:visible;gap:9px}
+  .seg.chips button{width:46px;height:46px;border-radius:50%;padding:0;border:3px dashed rgba(255,255,255,.55);color:#fff;font-family:'Jost',sans-serif;font-weight:700;font-size:13px;letter-spacing:0;cursor:pointer;opacity:.5;transform:scale(.88);box-shadow:0 4px 10px -4px rgba(0,0,0,.6),inset 0 0 0 5px rgba(0,0,0,.12);transition:transform .15s ease,opacity .15s ease,box-shadow .15s ease}
+  .seg.chips button:hover{opacity:.85;transform:scale(.95)}
+  .seg.chips button.on{opacity:1;transform:scale(1);color:#fff;box-shadow:0 0 0 2px var(--brass-lite),0 6px 16px -5px rgba(0,0,0,.75),inset 0 0 0 5px rgba(0,0,0,.12)}
+  .seg.chips .chip-5{background:radial-gradient(circle at 50% 35%,#c5564e,#8f241f 72%)}
+  .seg.chips .chip-10{background:radial-gradient(circle at 50% 35%,#6f9fd0,#37618f 72%)}
+  .seg.chips .chip-25{background:radial-gradient(circle at 50% 35%,#46a07a,#1c5f3e 72%)}
+  .seg.chips button:last-child{border-right:3px dashed rgba(255,255,255,.55)}
   button{font-family:'Jost',sans-serif;cursor:pointer;border:none;transition:all .18s ease}
   .btn{padding:13px 24px;border-radius:8px;font-size:12.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#26200f;position:relative;background:linear-gradient(180deg,var(--brass-lite),var(--brass) 52%,var(--brass-dark));box-shadow:0 6px 0 -1px #6e5226,0 12px 22px -10px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.5);}
   .btn{display:inline-flex;align-items:center;justify-content:center}
@@ -183,6 +193,13 @@
   .legend i.h{background:rgba(199,91,82,.55)}.legend i.s{background:rgba(95,174,126,.55)}
   .legend i.d{background:rgba(216,178,90,.6)}.legend i.p{background:rgba(127,168,212,.6)}.legend i.r{background:rgba(180,139,176,.6)}
   .chart-note{font-size:10.5px;color:rgba(244,236,216,.45);text-align:center;margin-top:10px;line-height:1.55;letter-spacing:.03em}
+  #count-rules{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+  #count-rules[hidden]{display:none}
+  .cr-lead{font-size:11.5px;color:rgba(244,236,216,.7);text-align:center;margin-bottom:12px;line-height:1.6}
+  .cr-grid{display:flex;flex-wrap:wrap;gap:7px 16px;justify-content:center;font-size:11.5px;color:rgba(244,236,216,.8);letter-spacing:.02em}
+  .cr-grid b{color:var(--brass-lite);font-weight:600}
+  .cr-grid i{color:rgba(244,236,216,.5);font-style:normal;font-size:10.5px}
+  .cr-foot{font-size:10px;color:rgba(244,236,216,.4);text-align:center;margin-top:12px;letter-spacing:.03em}
   .footer-note{text-align:center;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,236,216,.32);margin-top:34px}
 
   @media (max-width:560px){
@@ -193,8 +210,7 @@
     .rule{margin-top:8px}
     .stats{grid-template-columns:repeat(6,1fr);margin:8px 0 8px}
     .count-row{margin-bottom:10px}
-    .count-cells{grid-template-columns:repeat(3,1fr)}
-    .count .cv{font-size:16px}
+    .count .cv{font-size:18px}
     .stat{padding:5px 3px}
     .stat .k{font-size:6.5px;letter-spacing:.1em}
     .stat .v{font-size:14px}
@@ -248,10 +264,6 @@
         <span class="seg" data-opt="decks"><button data-val="4">4</button><button data-val="6" class="on">6</button><button data-val="8">8</button></span>
       </div>
       <div class="opt-row">
-        <span class="opt-label">Chip bet<small>Applies from the next hand</small></span>
-        <span class="seg" data-opt="bet"><button data-val="5">5</button><button data-val="10" class="on">10</button><button data-val="25">25</button></span>
-      </div>
-      <div class="opt-row">
         <span class="opt-label">Live chart hint<small>Off = blind practice</small></span>
         <span class="seg" data-opt="hint"><button data-val="1" class="on">On</button><button data-val="0">Off</button></span>
       </div>
@@ -260,7 +272,7 @@
         <span class="seg" data-opt="showChart"><button data-val="1" class="on">Show</button><button data-val="0">Hide</button></span>
       </div>
       <div class="opt-row">
-        <span class="opt-label">Card counting row<small>Practice running counts across systems</small></span>
+        <span class="opt-label">Card Counting<small>Shows the Hi-Lo count; correct play (and scoring) then follows count deviations</small></span>
         <span class="seg" data-opt="showCounts"><button data-val="1" class="on">Show</button><button data-val="0">Hide</button></span>
       </div>
       <div class="opt-row">
@@ -287,14 +299,12 @@
   <div class="stat-info" id="stat-info" hidden></div>
 
   <div class="count-row" id="count-row">
-    <div class="count-head"><span class="lbl">Card counting · tap a system to learn it</span><button class="count-btn" id="btn-count">Show</button></div>
+    <div class="count-head"><span class="lbl">Hi-Lo count <span class="info-i" id="count-info-btn" role="button" tabindex="0">i</span></span><button class="count-btn" id="btn-count">Show</button></div>
     <div class="count-cells">
-      <div class="count" data-cinfo="hilo"><span class="cn">Hi-Lo <span class="info-i">i</span></span><span class="cv hidden" id="c-hilo">?</span><span class="ct" id="t-hilo"></span></div>
-      <div class="count" data-cinfo="ko"><span class="cn">KO <span class="info-i">i</span></span><span class="cv hidden" id="c-ko">?</span><span class="ct" id="t-ko"></span></div>
-      <div class="count" data-cinfo="hiopt1"><span class="cn">Hi-Opt I <span class="info-i">i</span></span><span class="cv hidden" id="c-hiopt1">?</span><span class="ct" id="t-hiopt1"></span></div>
-      <div class="count" data-cinfo="hiopt2"><span class="cn">Hi-Opt II <span class="info-i">i</span></span><span class="cv hidden" id="c-hiopt2">?</span><span class="ct" id="t-hiopt2"></span></div>
-      <div class="count" data-cinfo="omega2"><span class="cn">Omega II <span class="info-i">i</span></span><span class="cv hidden" id="c-omega2">?</span><span class="ct" id="t-omega2"></span></div>
-      <div class="count" data-cinfo="zen"><span class="cn">Zen <span class="info-i">i</span></span><span class="cv hidden" id="c-zen">?</span><span class="ct" id="t-zen"></span></div>
+      <div class="count"><span class="cn">Running</span><span class="cv hidden" id="c-hilo">?</span></div>
+      <div class="count"><span class="cn">Decks</span><span class="cv" id="c-decks">6.0</span></div>
+      <div class="count"><span class="cn">True</span><span class="cv hidden" id="t-hilo">?</span></div>
+      <div class="count"><span class="cn">Bet</span><span class="cv hidden" id="c-bet">?</span></div>
     </div>
     <div class="stat-info" id="count-info" hidden></div>
   </div>
@@ -316,7 +326,8 @@
       <div class="player-area" id="player-area"></div>
     </div>
 
-    <div class="feedback neutral" id="feedback">Press <b>Deal</b> to begin. You're scored on strategy, not luck.</div>
+    <div class="feedback neutral" id="feedback">Press <b>Deal</b> to begin.</div>
+    <div class="deviation" id="deviation" hidden></div>
 
     <div class="actions">
       <button class="btn hit" id="btn-hit" disabled><span class="lbl">Hit</span><span class="key">H</span></button>
@@ -325,15 +336,20 @@
       <button class="btn split" id="btn-split" disabled><span class="lbl">Split</span><span class="key">P</span></button>
       <button class="btn surrender" id="btn-surrender" disabled style="display:none"><span class="lbl">Surrender</span><span class="key">R</span></button>
       <button class="btn ghost" id="btn-hint" style="display:none"><span class="lbl">Hint</span><span class="key">?</span></button>
+      <span class="seg chips" id="bet-row" data-opt="bet">
+        <button class="chip chip-5 on" data-val="5">$5</button>
+        <button class="chip chip-10" data-val="10">$10</button>
+        <button class="chip chip-25" data-val="25">$25</button>
+      </span>
       <button class="btn deal" id="btn-deal"><span class="lbl">Deal</span><span class="key">Space</span></button>
-      <div class="broke-note" id="broke-note" style="display:none">Out of chips. Lower your bet or reset your stats in <span class="cog-ref">⚙</span> Options to buy back in.</div>
+      <div class="broke-note" id="broke-note" style="display:none">Out of chips. Lower your bet, or reset your stats in <span class="cog-ref">⚙</span> Options, to buy back in.</div>
     </div>
   </div>
 
   <!-- Strategy chart (always visible) -->
   <div id="chart-panel">
     <div class="panel-inner">
-      <div class="panel-head"><h3>Basic Strategy Chart</h3><p id="chart-sub">Your hand (rows) vs. dealer upcard (columns)</p></div>
+      <div class="panel-head"><h3>Strategy Chart</h3><p id="chart-sub">Your hand (rows) vs. dealer upcard (columns)</p></div>
       <div class="chart-block"><h4>Hard Totals</h4><table class="grid" id="grid-hard"></table></div>
       <div class="chart-block"><h4>Soft Totals (hand contains an Ace)</h4><table class="grid" id="grid-soft"></table></div>
       <div class="chart-block"><h4>Pairs (splitting)</h4><table class="grid" id="grid-pairs"></table></div>
@@ -342,6 +358,7 @@
         <span><i class="d"></i> Double</span><span><i class="p"></i> Split</span><span><i class="r"></i> Surrender</span>
       </div>
       <div class="chart-note" id="chart-note"></div>
+      <div class="chart-block" id="count-rules" hidden></div>
     </div>
   </div>
 
@@ -355,21 +372,10 @@ const RANKS=[{r:'A',v:11},{r:'2',v:2},{r:'3',v:3},{r:'4',v:4},{r:'5',v:5},{r:'6'
 const SUITS=['♠','♥','♦','♣'];
 const DEALER_COLS=['2','3','4','5','6','7','8','9','10','A'];
 const MAX_HANDS=4;
-// Card-counting systems. tags keyed by card value (A=11, tens/faces=10). App-only; no effect on strategy.
-// bal = balanced (running count converts to a true count); KO is unbalanced.
+// Hi-Lo card counting. tags keyed by card value (A=11, tens/faces=10). App-only; no effect on strategy.
 const COUNT_SYSTEMS=[
   {key:'hilo',  name:'Hi-Lo',   bal:true,  tags:{2:1,3:1,4:1,5:1,6:1,7:0,8:0,9:0,10:-1,11:-1},
-   info:'<b>Hi-Lo</b> — level 1, balanced. 2–6 = +1, 7–9 = 0, 10–A = −1. The most popular count. Add each card\'s value as it\'s shown to get the <b>running count</b>, then divide by the decks remaining for the <b>true count</b> — raise your bet and deviate from basic strategy as it climbs.'},
-  {key:'ko',    name:'KO',      bal:false, tags:{2:1,3:1,4:1,5:1,6:1,7:1,8:0,9:0,10:-1,11:-1},
-   info:'<b>KO (Knock-Out)</b> — level 1, unbalanced. 2–7 = +1, 8–9 = 0, 10–A = −1. Because it\'s unbalanced you act on the <b>running count</b> directly against a fixed key count — no true-count division. Easier to run, slightly less precise.'},
-  {key:'hiopt1',name:'Hi-Opt I',bal:true,  tags:{2:0,3:1,4:1,5:1,6:1,7:0,8:0,9:0,10:-1,11:0},
-   info:'<b>Hi-Opt I</b> — level 1, balanced. 3–6 = +1, 10 = −1, everything else 0 (aces neutral). Keep a separate <i>side count</i> of aces for betting. Convert running → true count like Hi-Lo.'},
-  {key:'hiopt2',name:'Hi-Opt II',bal:true, tags:{2:1,3:1,4:2,5:2,6:1,7:1,8:0,9:0,10:-2,11:0},
-   info:'<b>Hi-Opt II</b> — level 2, balanced. 2,3,6,7 = +1, 4,5 = +2, 10 = −2, others 0. More powerful but harder to run; side-count aces. Use the true count for bets and deviations.'},
-  {key:'omega2',name:'Omega II',bal:true,  tags:{2:1,3:1,4:2,5:2,6:2,7:1,8:0,9:-1,10:-2,11:0},
-   info:'<b>Omega II</b> — level 2, balanced. 2,3,7 = +1, 4,5,6 = +2, 9 = −1, 10 = −2, 8 and A = 0. Strong for playing decisions. Track the true count; many players side-count aces too.'},
-  {key:'zen',   name:'Zen',     bal:true,  tags:{2:1,3:1,4:2,5:2,6:2,7:1,8:0,9:0,10:-2,11:-1},
-   info:'<b>Zen Count</b> — level 2, balanced. 2,3,7 = +1, 4,5,6 = +2, 10 = −2, A = −1, 8,9 = 0. Balances betting and playing accuracy without a separate ace count. Use the true count.'}
+   info:'<b>Hi-Lo</b> — level 1, balanced. 2–6 = +1, 7–9 = 0, 10–A = −1. Add each card\'s value as it\'s shown to get the <b>running count</b>, then divide by the decks remaining for the <b>true count</b> — raise your bet and deviate from basic strategy as it climbs.'}
 ];
 let counts={};let countedCards=new Set();let countsRevealed=false;
 function resetCounts(){counts={};for(const sys of COUNT_SYSTEMS)counts[sys.key]=0;countedCards=new Set();countsRevealed=false;}
@@ -392,24 +398,44 @@ function updateCounts(reveal){
 }
 function renderCounts(flash){
   const decksRem=shoe.length/52;
-  for(const sys of COUNT_SYSTEMS){
-    const el=$('c-'+sys.key),tel=$('t-'+sys.key);if(!el)continue;
-    const n=counts[sys.key];
-    el.textContent=countsRevealed?((n>0?'+':'')+n):'?';
-    el.classList.toggle('hidden',!countsRevealed);
-    if(tel){
-      if(countsRevealed&&sys.bal&&decksRem>0){const tc=Math.round((n/decksRem)*10)/10;tel.textContent='TC '+(tc>0?'+':'')+tc;}
-      else tel.textContent='';
-    }
-    if(flash&&countsRevealed){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
-  }
+  $('c-decks').textContent=(Math.round(decksRem*10)/10).toFixed(1);
+  const n=counts.hilo||0;
+  const rc=$('c-hilo'),tc=$('t-hilo');
+  rc.textContent=countsRevealed?((n>0?'+':'')+n):'?';
+  rc.classList.toggle('hidden',!countsRevealed);
+  const rawTc=decksRem>0?n/decksRem:0;
+  const t=Math.round(rawTc*10)/10;
+  tc.textContent=countsRevealed?((t>0?'+':'')+t):'?';
+  tc.classList.toggle('hidden',!countsRevealed);
+  const be=$('c-bet');
+  be.textContent=countsRevealed?('$'+recommendedBet(rawTc)):'?';
+  be.classList.toggle('hidden',!countsRevealed);
+  if(flash&&countsRevealed)[rc,tc,be].forEach(el=>{el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');});
   $('btn-count').textContent=countsRevealed?'Hide':'Show';
   $('btn-count').classList.toggle('on',countsRevealed);
+}
+// Bet spread mapped to the available chips: min until the count turns favourable, then ramp up.
+function recommendedBet(tc){
+  let w=tc>=4?25:tc>=2?10:5;
+  const afford=[5,10,25].filter(c=>c<=S.bank);
+  if(afford.length&&w>afford[afford.length-1])w=afford[afford.length-1];
+  return w;
+}
+// Scores the wager against the count (only when counting is enabled). tc is the count before this deal.
+function scoreBet(tc){
+  const want=recommendedBet(tc),tcs=(tc>0?'+':'')+(Math.round(tc*10)/10);
+  S.total++;
+  if(S.baseBet===want){
+    S.correct++;S.streak++;S.best=Math.max(S.best,S.streak);S.score+=10+Math.min(S.streak-1,10);
+    return {msg:'<span class="tag">✓ Bet</span> — $'+S.baseBet+' is right at true count '+tcs+'.',kind:'good',changed:['s-score','s-streak','s-acc','s-best']};
+  }
+  S.streak=0;
+  return {msg:'<span class="tag">✗ Bet</span> — true count '+tcs+' calls for $'+want+' (you bet $'+S.baseBet+').',kind:'bad',changed:['s-streak','s-acc']};
 }
 function updateCountRowVisibility(){$('count-row').hidden=!rules.showCounts;}
 
 /* ============================================================ State */
-const S={hands:[],active:0,dealer:[],phase:'idle',bank:500,score:0,correct:0,total:0,streak:0,best:0,baseBet:10,roundPerfect:true};
+const S={hands:[],active:0,dealer:[],phase:'idle',bank:500,score:0,correct:0,total:0,streak:0,best:0,baseBet:5,roundPerfect:true};
 const $=id=>document.getElementById(id);
 const RANK_TIERS=[{min:0,name:'Novice'},{min:5,name:'Apprentice'},{min:15,name:'Card Sharp'},{min:30,name:'Pit Pro'},{min:50,name:'Advantage Player'},{min:100,name:'High Roller'},{min:200,name:'Whale'}];
 
@@ -425,11 +451,11 @@ function cardHTML(card,opts={}){
   return`<div class="${cls}"><div class="corner tl"><span class="rank">${card.rank}</span><span class="suit">${card.suit}</span></div><div class="pip">${card.suit}</div><div class="corner br"><span class="rank">${card.rank}</span><span class="suit">${card.suit}</span></div></div>`;
 }
 function outcomeLabel(o,bet){
-  if(o==='win')return{cls:'win',txt:'Win +'+bet};
-  if(o==='blackjack')return{cls:'win',txt:'Blackjack +'+Math.round(bet*1.5)};
-  if(o==='lose')return{cls:'lose',txt:'Lose −'+bet};
-  if(o==='bust')return{cls:'lose',txt:'Bust −'+bet};
-  if(o==='surrender')return{cls:'lose',txt:'Surrender −'+Math.round(bet/2)};
+  if(o==='win')return{cls:'win',txt:'Win +$'+bet};
+  if(o==='blackjack')return{cls:'win',txt:'Blackjack +$'+Math.round(bet*1.5)};
+  if(o==='lose')return{cls:'lose',txt:'Lose −$'+bet};
+  if(o==='bust')return{cls:'lose',txt:'Bust −$'+bet};
+  if(o==='surrender')return{cls:'lose',txt:'Surrender −$'+Math.round(bet/2)};
   if(o==='push')return{cls:'push',txt:'Push'};
   return null;
 }
@@ -450,7 +476,7 @@ function renderPlayer(){
     const outClass=h.outcome?('out-'+(h.outcome==='bust'||h.outcome==='surrender'?'lose':h.outcome==='blackjack'?'win':h.outcome)):'';
     const cls=['phand',active?'active':'',h.done?'done':'',outClass].join(' ').trim();
     const cardsHTML=h.cards.map(c=>cardHTML(c)).join('');
-    let meta='';if(multi)meta+='Hand '+(i+1);if(active)meta+=(multi?' · ':'')+'▸ Playing';
+    let meta='';if(multi)meta+='Hand '+(i+1);
     const badge=`<div class="total-badge">${(v.soft?'Soft ':'')+v.total+(v.total>21?'  ·  Bust':'')}</div>`;
     let res='';if(multi&&S.phase==='done'&&h.outcome){const o=outcomeLabel(h.outcome,h.bet);if(o)res=`<span class="res ${o.cls}">${o.txt}</span>`;}
     const metaLine=(meta||res)?`<div class="hand-meta">${meta}${res}</div>`:'';
@@ -458,7 +484,7 @@ function renderPlayer(){
   }).join('');
 }
 function renderStats(flash=[]){
-  const map={'s-bank':S.bank,'s-score':S.score,'s-streak':S.streak,'s-best':S.best,'s-acc':(S.total?Math.round(S.correct/S.total*100)+'%':'—'),'s-cards':cardsDealt()+'/'+shoeSize()};
+  const map={'s-bank':'$'+S.bank,'s-score':S.score,'s-streak':S.streak,'s-best':S.best,'s-acc':(S.total?Math.round(S.correct/S.total*100)+'%':'—'),'s-cards':cardsDealt()+'/'+shoeSize()};
   for(const id in map){const el=$(id);el.textContent=map[id];if(flash.includes(id)){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}}
   let tier=RANK_TIERS[0],next=null;
   for(let i=0;i<RANK_TIERS.length;i++){if(S.correct>=RANK_TIERS[i].min){tier=RANK_TIERS[i];next=RANK_TIERS[i+1]||null;}}
@@ -480,6 +506,7 @@ function setButtons(){
   show($('btn-deal'),S.phase!=='player'&&!broke);
   $('btn-deal').querySelector('.lbl').textContent=(S.phase==='done')?'Next Hand':'Deal';
   $('broke-note').style.display=(S.phase!=='player'&&broke)?'':'none';
+  $('bet-row').style.display=(S.phase!=='player')?'':'none';   // bet only between hands
 }
 function feedback(html,kind){const f=$('feedback');f.className='feedback '+kind;f.innerHTML=html;}
 function showHint(){
@@ -490,7 +517,8 @@ function showHint(){
   feedback('<span class="tag">Hint</span> — '+prefix+'optimal play is <b>'+opt.toUpperCase()+'</b> on '+describe(h.cards,d)+'.','neutral');
 }
 function result(html,kind){const r=$('result');r.className='result '+(kind||'');r.innerHTML=html||'';}
-function render(reveal){renderDealer(!!reveal);renderPlayer();setButtons();highlight();setCardStat();updateCounts(!!reveal);renderCounts();}
+function render(reveal){renderDealer(!!reveal);renderPlayer();setButtons();highlight();setCardStat();updateCounts(!!reveal);renderCounts();updateDeviation();
+  if(S.phase==='player'){const h=activeHand();if(h){const r=$('result');r.className='result bet';r.textContent='Bet $'+h.bet;}}}
 
 /* ============================================================ Strategy chart */
 function colVal(c){return c==='A'?11:parseInt(c,10);}
@@ -529,6 +557,23 @@ function buildCharts(){
   $('chart-sub').textContent='Your hand (rows) vs. dealer upcard (columns)'+(rules.hint?' · live cell highlighted':'');
   $('chart-note').innerHTML='<b>D</b> = double else hit · <b>Ds</b> = double else stand · <b>P</b> = split · <b>R</b> = surrender.<br>'+
     'Dealer '+(rules.h17?'hits':'stands on')+' soft 17 · double after split '+(rules.das?'allowed':'not allowed')+' · late surrender '+(rules.surrender?'on':'off')+' · '+rules.decks+' decks · resplit to 4 hands · split aces draw one card.';
+  renderCountRules();
+}
+// Hi-Lo count plays shown beneath the chart when counting is on (derived from the same index table).
+function renderCountRules(){
+  const blk=$('count-rules');if(!blk)return;
+  if(!rules.showCounts){blk.hidden=true;blk.innerHTML='';return;}
+  const dl=v=>v===11?'A':v===10?'T':v;
+  const hand=e=>e.pair?(e.pair===10?'T,T':e.pair+','+e.pair):e.hard;
+  const items=HILO_INDEX.map(e=>{
+    const thr=e.dir==='>='?('TC ≥ '+(e.idx>0?'+':'')+e.idx):('TC < '+(e.idx>0?'+':'')+e.idx);
+    return '<span>'+hand(e)+' v '+dl(e.dl)+' → <b>'+e.act.toUpperCase()+'</b> <i>'+thr+'</i></span>';
+  }).join('');
+  blk.hidden=false;
+  blk.innerHTML='<h4>Hi-Lo Count Plays</h4>'+
+    '<p class="cr-lead"><b>Bet:</b> TC ≤ +1 → $5 · +2 to +3 → $10 · ≥ +4 → $25.&nbsp;&nbsp;<b>Insurance:</b> take at TC ≥ +3.</p>'+
+    '<div class="cr-grid">'+items+'</div>'+
+    '<p class="cr-foot">Deviate from the chart above only once the true count crosses the listed threshold.</p>';
 }
 function chartCellFor(h){
   const d=S.dealer[0].value;const col=DEALER_COLS[d===11?9:d-2];
@@ -557,46 +602,108 @@ function score(action,h){
   document.querySelectorAll('td.hl-miss').forEach(e=>e.classList.remove('hl-miss'));
   if(tempChart){tempChart=false;updateChartVisibility();}
   const d=S.dealer[0].value;
-  const opt=optimalAction(h.cards,d,{canDbl:canDoubleVal(h),canSpl:canSplitVal(h),canSur:canSurrenderVal(h)});
+  let opt=optimalAction(h.cards,d,{canDbl:canDoubleVal(h),canSpl:canSplitVal(h),canSur:canSurrenderVal(h)});
+  // When the count row is enabled, the correct play includes Hi-Lo index deviations.
+  let devEntry=null;
+  if(rules.showCounts){const dv=countDeviation(h,d,trueCount());if(dv&&dv.act!==opt){opt=dv.act;devEntry=dv;}}
   S.total++;
   const prefix=S.hands.length>1?('Hand '+(S.active+1)+': '):'';
   const desc=describe(h.cards,d);
+  const devTag=devEntry?' <small style="opacity:.8">count deviation · true '+((trueCount()>0?'+':'')+(Math.round(trueCount()*10)/10))+', index '+devEntry.idx+'</small>':'';
   if(action===opt){
     S.correct++;S.streak++;S.best=Math.max(S.best,S.streak);S.score+=10+Math.min(S.streak-1,10);
-    feedback('<span class="tag">✓ Correct</span> — '+prefix+capitalize(opt)+' is optimal on '+desc+'.','good');
+    feedback('<span class="tag">✓ Correct</span> — '+prefix+capitalize(opt)+' is optimal on '+desc+'.'+devTag,'good');
     renderStats(['s-score','s-streak','s-acc',...(S.streak===S.best?['s-best']:[])]);
   }else{
     S.streak=0;S.roundPerfect=false;
-    feedback('<span class="tag">✗ Not optimal</span> — '+prefix+'best play on '+desc+' was <b>'+opt.toUpperCase()+'</b>.','bad');
+    feedback('<span class="tag">✗ Not optimal</span> — '+prefix+'best play on '+desc+' was <b>'+opt.toUpperCase()+'</b>.'+devTag,'bad');
     renderStats(['s-streak','s-acc']);
-    const miss=chartCellFor(h);if(miss)miss.classList.add('hl-miss');
-    if(rules.scrollMiss){
-      if(!rules.showChart){tempChart=true;updateChartVisibility();}
-      $('chart-panel').scrollIntoView({behavior:'smooth',block:'start'});
+    // The basic-strategy chart can't show count deviations, so only point at it for non-deviation misses.
+    if(!devEntry){
+      const miss=chartCellFor(h);if(miss)miss.classList.add('hl-miss');
+      if(rules.scrollMiss){
+        if(!rules.showChart){tempChart=true;updateChartVisibility();}
+        $('chart-panel').scrollIntoView({behavior:'smooth',block:'start'});
+      }
     }
   }
   save();
+}
+
+/* ============================================================ Count deviations (Illustrious 18, Hi-Lo) */
+// dl = dealer up value (10=ten, 11=ace). dir '>=' deviates at/above idx; '<' deviates below idx.
+const HILO_INDEX=[
+  {hard:16,dl:10,idx:0,dir:'>=',act:'stand'},
+  {hard:15,dl:10,idx:4,dir:'>=',act:'stand'},
+  {hard:12,dl:3, idx:2,dir:'>=',act:'stand'},
+  {hard:12,dl:2, idx:3,dir:'>=',act:'stand'},
+  {hard:16,dl:9, idx:5,dir:'>=',act:'stand'},
+  {hard:13,dl:2, idx:-1,dir:'<',act:'hit'},
+  {hard:12,dl:4, idx:0, dir:'<',act:'hit'},
+  {hard:12,dl:5, idx:-2,dir:'<',act:'hit'},
+  {hard:12,dl:6, idx:-1,dir:'<',act:'hit'},
+  {hard:13,dl:3, idx:-2,dir:'<',act:'hit'},
+  {hard:11,dl:11,idx:1,dir:'>=',act:'double'},
+  {hard:9, dl:2, idx:1,dir:'>=',act:'double'},
+  {hard:10,dl:11,idx:4,dir:'>=',act:'double'},
+  {hard:9, dl:7, idx:3,dir:'>=',act:'double'},
+  {hard:10,dl:10,idx:4,dir:'>=',act:'double'},
+  {pair:10,dl:5, idx:5,dir:'>=',act:'split'},
+  {pair:10,dl:6, idx:4,dir:'>=',act:'split'}
+];
+function trueCount(){const dr=shoe.length/52;return dr>0?(counts.hilo||0)/dr:0;}
+function countDeviation(h,dUp,tc){
+  if(!h)return null;
+  const {total,soft}=handValue(h.cards);
+  for(const e of HILO_INDEX){
+    if(e.dl!==dUp)continue;
+    if(e.pair){if(!(isPair(h.cards)&&h.cards[0].value===e.pair))continue;}
+    else{if(soft||total!==e.hard)continue;}
+    if(e.act==='double'&&!canDoubleVal(h))continue;
+    if(e.act==='split'&&!canSplitVal(h))continue;
+    const crossed=e.dir==='>='?(tc>=e.idx):(tc<e.idx);
+    if(crossed)return e;
+  }
+  return null;
+}
+function updateDeviation(){
+  const el=$('deviation');el.hidden=true;el.innerHTML='';
+  if(!rules.showCounts||!countsRevealed)return;
+  const h=activeHand();
+  if(!h||h.done||h.fromAceSplit||S.phase!=='player')return;
+  const dUp=S.dealer[0].value,tc=trueCount(),tcs=(tc>0?'+':'')+(Math.round(tc*10)/10);
+  const hints=[];
+  if(dUp===11&&S.hands.length===1&&h.cards.length===2&&tc>=3)hints.push('take <b>insurance</b>');
+  const dev=countDeviation(h,dUp,tc);
+  if(dev){
+    const basic=optimalAction(h.cards,dUp,{canDbl:canDoubleVal(h),canSpl:canSplitVal(h),canSur:canSurrenderVal(h)});
+    if(dev.act!==basic)hints.push('<b>'+dev.act.toUpperCase()+'</b> (index '+dev.idx+')');
+  }
+  if(hints.length){el.hidden=false;el.innerHTML='<span class="tag">Count</span> True count '+tcs+' → '+hints.join(' · ')+'.';}
 }
 
 /* ============================================================ Flow */
 function newHand(cards,extra={}){return Object.assign({cards,bet:S.baseBet,done:false,doubled:false,fromSplit:false,fromAceSplit:false,outcome:null},extra);}
 function startRound(){
   if(S.bank<S.baseBet){setButtons();return;}
+  const bet=rules.showCounts?scoreBet(trueCount()):null;   // score the wager vs the pre-deal count
   const h=newHand([draw(),draw()]);
   S.hands=[h];S.active=0;S.dealer=[draw(),draw()];S.phase='player';S.roundPerfect=true;result('','');
   const shuffled=pendingShuffle;pendingShuffle=false;
   if(tempChart){tempChart=false;updateChartVisibility();}
   document.querySelectorAll('td.hl-miss').forEach(e=>e.classList.remove('hl-miss'));
+  const betStats=bet?bet.changed:[];
   const p=handValue(h.cards),dBJ=handValue(S.dealer).total===21,pBJ=p.total===21;
   if(pBJ||dBJ){
     S.phase='done';
     if(pBJ&&dBJ){h.outcome='push';feedback('Both dealt naturals.','neutral');result('Push','push');}
-    else if(pBJ){h.outcome='blackjack';S.bank+=Math.round(S.baseBet*1.5);feedback('Natural blackjack — no decision needed.','neutral');result('Blackjack!  +'+Math.round(S.baseBet*1.5),'win');}
-    else{h.outcome='lose';S.bank-=S.baseBet;feedback('Dealer was dealt a natural.','neutral');result('Dealer Blackjack  −'+S.baseBet,'lose');}
-    renderStats(shuffled?['s-bank','s-cards']:['s-bank']);render(dBJ);save();return;
+    else if(pBJ){h.outcome='blackjack';S.bank+=Math.round(S.baseBet*1.5);feedback('Natural blackjack — no decision needed.','neutral');result('Blackjack!  +$'+Math.round(S.baseBet*1.5),'win');}
+    else{h.outcome='lose';S.bank-=S.baseBet;feedback('Dealer was dealt a natural.','neutral');result('Dealer Blackjack  −$'+S.baseBet,'lose');}
+    renderStats(['s-bank'].concat(shuffled?['s-cards']:[]).concat(betStats));render(dBJ);save();return;
   }
-  feedback(shuffled?'<span style="color:var(--brass-lite)">✦ Shoe reshuffled</span>':'','neutral');
-  renderStats(shuffled?['s-cards']:[]);render(false);
+  const shuf=shuffled?'<span style="color:var(--brass-lite)">✦ Shoe reshuffled.</span> ':'';
+  if(bet)feedback(shuf+bet.msg,bet.kind); else feedback(shuf.trim(),'neutral');
+  renderStats((shuffled?['s-cards']:[]).concat(betStats));render(false);
 }
 function seekActionable(){
   while(S.active<S.hands.length){
@@ -622,7 +729,7 @@ function onSplit(){const h=activeHand();if(!canSplitVal(h))return;score('split',
   S.hands.splice(S.active,1,h1,h2);proceed();}
 function onSurrender(){const h=activeHand();if(!canSurrenderVal(h))return;score('surrender',h);
   h.outcome='surrender';h.done=true;S.phase='done';S.bank-=Math.round(h.bet/2);
-  result('Surrender  −'+Math.round(h.bet/2),'lose');renderStats(['s-bank']);render(false);save();}
+  result('Surrender  −$'+Math.round(h.bet/2),'lose');renderStats(['s-bank']);render(false);save();}
 function dealerShouldHit(){const v=handValue(S.dealer);if(v.total<17)return true;if(v.total===17&&v.soft&&rules.h17)return true;return false;}
 function dealerPlayAndResolve(){
   S.phase='done';
@@ -638,7 +745,7 @@ function dealerPlayAndResolve(){
     else{h.outcome='push';}
   }
   S.bank+=net;
-  const sign=net>0?'  +'+net:(net<0?'  −'+Math.abs(net):'');
+  const sign=net>0?'  +$'+net:(net<0?'  −$'+Math.abs(net):'');
   const kind=net>0?'win':(net<0?'lose':'push');
   result((net>0?'Round Won':net<0?'Round Lost':'Push')+sign,kind);
   renderStats(['s-bank']);render(anyAlive);save();
@@ -688,9 +795,9 @@ function updateSaveStatus(){
 }
 
 /* ============================================================ Options handling */
-function applyRules(){
+function applyRules(changed){
   S.baseBet=rules.bet;
-  buildShoe();          // rebuild with current deck count
+  if(changed==='decks')buildShoe();   // only a deck change rebuilds/reshuffles the shoe (and resets the count)
   buildCharts();
   setButtons();
   highlight();
@@ -702,11 +809,13 @@ function applyRules(){
 document.querySelectorAll('.seg').forEach(seg=>{
   seg.addEventListener('click',e=>{
     const btn=e.target.closest('button');if(!btn)return;
-    const opt=seg.dataset.opt;let val=btn.dataset.val;
+    const opt=seg.dataset.opt;
+    if(opt==='bet'&&S.phase==='player')return;   // can't change your bet mid-hand
+    let val=btn.dataset.val;
     if(opt==='decks'||opt==='bet')val=parseInt(val,10); else val=(val==='1');
     rules[opt]=val;
     seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===btn));
-    applyRules();
+    applyRules(opt);
   });
 });
 $('btn-reset').addEventListener('click',()=>{
@@ -731,7 +840,7 @@ $('btn-double').addEventListener('click',onDouble);
 $('btn-split').addEventListener('click',onSplit);
 $('btn-surrender').addEventListener('click',onSurrender);
 $('btn-hint').addEventListener('click',showHint);
-$('btn-count').addEventListener('click',()=>{countsRevealed=!countsRevealed;renderCounts(true);});
+$('btn-count').addEventListener('click',()=>{countsRevealed=!countsRevealed;renderCounts(true);updateDeviation();});
 
 function toggleOptions(force){
   const p=$('options-panel'),open=(force===undefined)?!p.classList.contains('open'):force;
@@ -770,28 +879,17 @@ document.addEventListener('click',e=>{
   if(!box.hasAttribute('hidden')&&!box.contains(e.target)&&!e.target.closest('.stat[data-info]'))closeStatInfo();
 });
 
-let openCount=null;
-function showCountInfo(key,el){
-  const sys=COUNT_SYSTEMS.find(s=>s.key===key);if(!sys)return;
-  if(openCount===key){closeCountInfo();return;}
-  closeCountInfo();
-  const box=$('count-info');box.innerHTML=sys.info;box.removeAttribute('hidden');
-  el.classList.add('open');openCount=key;
+function closeCountInfo(){$('count-info').setAttribute('hidden','');}
+function toggleCountInfo(){
+  const box=$('count-info');
+  if(box.hasAttribute('hidden')){box.innerHTML=COUNT_SYSTEMS[0].info;box.removeAttribute('hidden');}
+  else closeCountInfo();
 }
-function closeCountInfo(){
-  $('count-info').setAttribute('hidden','');
-  document.querySelectorAll('.count.open').forEach(c=>c.classList.remove('open'));
-  openCount=null;
-}
-document.querySelectorAll('.count[data-cinfo]').forEach(el=>{
-  el.setAttribute('role','button');el.setAttribute('tabindex','0');
-  const key=el.dataset.cinfo;
-  el.addEventListener('click',e=>{e.stopPropagation();showCountInfo(key,el);});
-  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();showCountInfo(key,el);}});
-});
+$('count-info-btn').addEventListener('click',e=>{e.stopPropagation();toggleCountInfo();});
+$('count-info-btn').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();toggleCountInfo();}});
 document.addEventListener('click',e=>{
   const box=$('count-info');
-  if(!box.hasAttribute('hidden')&&!box.contains(e.target)&&!e.target.closest('.count[data-cinfo]'))closeCountInfo();
+  if(!box.hasAttribute('hidden')&&!box.contains(e.target)&&e.target.id!=='count-info-btn')closeCountInfo();
 });
 
 document.addEventListener('keydown',e=>{
