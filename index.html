@@ -66,6 +66,10 @@
   .count .cn{display:block;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass);opacity:.8}
   .count .cv{display:block;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:22px;line-height:1.1;color:var(--cream);margin-top:2px}
   .count .cv.hidden{color:rgba(244,236,216,.28)}
+  .mini-chip{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;border:2px dashed rgba(255,255,255,.55);color:#fff;font-family:'Jost',sans-serif;font-size:9.5px;font-weight:700;box-shadow:0 2px 6px -2px rgba(0,0,0,.6),inset 0 0 0 3px rgba(0,0,0,.12)}
+  .mini-chip.c5{background:radial-gradient(circle at 50% 35%,#c5564e,#8f241f 72%)}
+  .mini-chip.c10{background:radial-gradient(circle at 50% 35%,#6f9fd0,#37618f 72%)}
+  .mini-chip.c25{background:radial-gradient(circle at 50% 35%,#46a07a,#1c5f3e 72%)}
   .count .cv.flash{animation:pop .45s ease}
   .count-head .info-i{cursor:pointer}
   #count-info{margin:8px 0 0}
@@ -408,8 +412,8 @@ function renderCounts(flash){
   tc.textContent=countsRevealed?((t>0?'+':'')+t):'?';
   tc.classList.toggle('hidden',!countsRevealed);
   const be=$('c-bet');
-  be.textContent=countsRevealed?('$'+recommendedBet(rawTc)):'?';
-  be.classList.toggle('hidden',!countsRevealed);
+  if(countsRevealed){const rb=recommendedBet(rawTc);be.innerHTML='<span class="mini-chip c'+rb+'">$'+rb+'</span>';be.classList.remove('hidden');}
+  else{be.textContent='?';be.classList.add('hidden');}
   if(flash&&countsRevealed)[rc,tc,be].forEach(el=>{el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');});
   $('btn-count').textContent=countsRevealed?'Hide':'Show';
   $('btn-count').classList.toggle('on',countsRevealed);
@@ -422,11 +426,12 @@ function recommendedBet(tc){
   return w;
 }
 // Scores the wager against the count (only when counting is enabled). tc is the count before this deal.
+const BET_WEIGHT=3;   // bet-sizing carries most of a counter's edge, so it's worth more than a play decision
 function scoreBet(tc){
   const want=recommendedBet(tc),tcs=(tc>0?'+':'')+(Math.round(tc*10)/10);
   S.total++;
   if(S.baseBet===want){
-    S.correct++;S.streak++;S.best=Math.max(S.best,S.streak);S.score+=10+Math.min(S.streak-1,10);
+    S.correct++;S.streak++;S.best=Math.max(S.best,S.streak);S.score+=BET_WEIGHT*(10+Math.min(S.streak-1,10));
     return {msg:'<span class="tag">✓ Bet</span> — $'+S.baseBet+' is right at true count '+tcs+'.',kind:'good',changed:['s-score','s-streak','s-acc','s-best']};
   }
   S.streak=0;
