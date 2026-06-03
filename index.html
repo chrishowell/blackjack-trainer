@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>21 — Basic Strategy Trainer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#061a14">
+<title>Blackjack — Strategy Trainer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -17,7 +18,8 @@
     --line:rgba(201,164,92,.28);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
+  html{height:100%;background:var(--felt-3)}
+  body{height:100%}
   body{font-family:'Jost',sans-serif;color:var(--cream);
     background:radial-gradient(ellipse 120% 90% at 50% 22%, var(--felt-1) 0%, var(--felt-2) 46%, var(--felt-3) 100%);
     min-height:100vh;position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
@@ -26,6 +28,10 @@
   body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;box-shadow:inset 0 0 220px 60px rgba(0,0,0,.55);}
   .wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:26px 20px 60px}
 
+  .cog{position:absolute;top:20px;right:18px;z-index:4;width:42px;height:42px;border-radius:50%;background:rgba(6,24,18,.55);border:1px solid var(--line);color:var(--brass);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .4s cubic-bezier(.2,.8,.2,1),background .25s,color .25s,box-shadow .25s;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+  .cog svg{width:21px;height:21px;display:block}
+  .cog:hover{background:rgba(201,164,92,.12);color:var(--brass-lite);transform:rotate(60deg)}
+  .cog.on{background:linear-gradient(180deg,var(--brass-lite),var(--brass));color:#26200f;border-color:transparent;transform:rotate(60deg);box-shadow:0 4px 14px -6px rgba(201,164,92,.6)}
   header{text-align:center;margin-bottom:18px}
   .title{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:.01em;font-size:clamp(40px,10vw,64px);line-height:.9;color:var(--brass-lite);text-shadow:0 2px 0 var(--brass-dark),0 0 26px rgba(201,164,92,.25);}
   .subtitle{font-weight:300;letter-spacing:.42em;text-transform:uppercase;font-size:11px;color:var(--brass);margin-top:6px;padding-left:.42em;}
@@ -34,11 +40,14 @@
   .rule .ln.r{background:linear-gradient(90deg,var(--brass),transparent)}
   .rule .dot{font-size:9px;opacity:.8}
 
-  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:18px 0 22px;}
-  .stat{background:rgba(6,26,20,.55);padding:11px 8px;text-align:center}
-  .stat .k{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass);font-weight:400;opacity:.85}
-  .stat .v{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:26px;line-height:1.05;color:var(--cream);margin-top:2px}
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:12px 0 14px;}
+  .stat{background:rgba(6,26,20,.55);padding:9px 7px;text-align:center}
+  .stat .k{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);font-weight:400;opacity:.85}
+  .stat .v{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:22px;line-height:1.05;color:var(--cream);margin-top:2px}
   .stat .v.flash{animation:pop .45s ease}
+  .stat-primary{background:rgba(201,164,92,.14);box-shadow:inset 0 0 0 1px var(--brass)}
+  .stat-primary .k{color:var(--brass-lite);opacity:1;font-weight:500}
+  .stat-primary .v{font-size:30px;color:var(--brass-lite)}
   @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.22);color:var(--brass-lite)}100%{transform:scale(1)}}
 
   .rank{display:flex;align-items:center;gap:12px;margin:-6px 0 24px;font-size:12px;letter-spacing:.12em}
@@ -52,10 +61,9 @@
   .total-wrap{text-align:center}
   .hand{display:flex;justify-content:center;align-items:flex-end;gap:9px;min-height:120px}
   .total-badge{display:inline-block;margin:10px auto 0;font-size:12px;letter-spacing:.14em;color:var(--cream);background:rgba(0,0,0,.3);border:1px solid var(--line);padding:3px 12px;border-radius:20px;text-align:center;}
-  .divider{height:1px;background:var(--line);margin:20px 0}
 
   .player-area{display:flex;gap:16px;justify-content:center;align-items:flex-start;flex-wrap:wrap}
-  .phand{border-radius:13px;padding:8px 10px 6px;transition:box-shadow .25s,opacity .25s,background .25s;position:relative}
+  .phand{border-radius:13px;padding:8px 10px 6px;transition:box-shadow .25s,opacity .25s,background .25s;position:relative;text-align:center}
   .phand.active{background:rgba(201,164,92,.07);box-shadow:0 0 0 1px var(--brass),0 0 26px -6px var(--brass)}
   .phand.done{opacity:.74}
   .phand.out-win{box-shadow:0 0 0 1px rgba(95,174,126,.55)}
@@ -84,10 +92,13 @@
   .feedback .tag{font-weight:600;letter-spacing:.04em}
   .feedback.good{color:var(--good)}.feedback.bad{color:var(--bad)}.feedback.neutral{color:rgba(244,236,216,.7)}
   .feedback small{display:block;font-size:12px;opacity:.85;margin-top:3px;letter-spacing:.06em}
-  .result{text-align:center;margin-top:4px;font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;min-height:30px;letter-spacing:.02em;}
+  .divider-result{display:flex;align-items:center;margin:20px 0}
+  .divider-result .dline{flex:1;height:1px;background:var(--line)}
+  .result{text-align:center;margin:0 16px;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:.02em;white-space:nowrap;color:var(--cream)}
+  .result:empty{margin:0}
   .result.win{color:var(--good)}.result.lose{color:var(--bad)}.result.push{color:var(--brass-lite)}
 
-  .actions{display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+  .actions{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
   button{font-family:'Jost',sans-serif;cursor:pointer;border:none;transition:all .18s ease}
   .btn{padding:13px 24px;border-radius:8px;font-size:12.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#26200f;position:relative;background:linear-gradient(180deg,var(--brass-lite),var(--brass) 52%,var(--brass-dark));box-shadow:0 6px 0 -1px #6e5226,0 12px 22px -10px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.5);}
   .btn{display:inline-flex;align-items:center;justify-content:center}
@@ -105,7 +116,6 @@
   .btn.ghost{background:transparent;color:var(--brass);border:1px solid var(--brass);box-shadow:none;letter-spacing:.18em;}
   .btn.ghost:hover{background:rgba(201,164,92,.12);transform:translateY(-1px)}
 
-  .toggles{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap}
   .panel{overflow:hidden;max-height:0;transition:max-height .55s ease}
   .panel.open{max-height:2400px}
   .panel-inner{margin-top:18px;border:1px solid var(--line);border-radius:14px;padding:18px 18px 20px;background:rgba(6,24,18,.5)}
@@ -123,7 +133,8 @@
   .seg button:last-child{border-right:none}
   .seg button.on{background:linear-gradient(180deg,var(--brass-lite),var(--brass));color:#26200f}
   .opt-reset{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
-  .reset-btn{background:transparent;color:#e0b3dc;border:1px solid rgba(180,139,176,.55);border-radius:8px;padding:10px 22px;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase}
+  .reset-btn{background:transparent;color:#e0b3dc;border:1px solid rgba(180,139,176,.55);border-radius:8px;padding:9px 18px;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;text-align:center;line-height:1.3}
+  .reset-btn small{display:block;font-size:9px;letter-spacing:.04em;text-transform:none;color:rgba(224,179,220,.6);margin-top:3px}
   .reset-btn:hover{background:rgba(180,139,176,.14)}
 
   /* chart */
@@ -140,6 +151,7 @@
   td.cell-R{background:rgba(180,139,176,.26);color:#ecd2e8}
   td.row-h{color:var(--cream);font-weight:500;background:rgba(0,0,0,.25)}
   td.hl{outline:2px solid var(--brass-lite);outline-offset:-2px;box-shadow:inset 0 0 12px rgba(232,210,154,.5);position:relative;z-index:1}
+  td.hl-miss{outline:2px solid var(--bad);outline-offset:-2px;box-shadow:inset 0 0 14px rgba(199,91,82,.6);position:relative;z-index:1}
   .legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-size:11px;letter-spacing:.06em;margin-top:8px;color:rgba(244,236,216,.7)}
   .legend span{display:inline-flex;align-items:center;gap:6px}
   .legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
@@ -149,9 +161,25 @@
   .footer-note{text-align:center;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,236,216,.32);margin-top:34px}
 
   @media (max-width:560px){
-    .stats{grid-template-columns:repeat(3,1fr)}
+    .wrap{padding:14px 14px 36px}
+    header{margin-bottom:10px}
+    .title{font-size:clamp(34px,9vw,48px)}
+    .subtitle{letter-spacing:.34em;font-size:10px}
+    .rule{margin-top:8px}
+    .stats{grid-template-columns:repeat(5,1fr);margin:8px 0 8px}
+    .stat{padding:5px 3px}
+    .stat .k{font-size:6.5px;letter-spacing:.1em}
+    .stat .v{font-size:14px}
+    .stat-primary .v{font-size:18px}
+    .rank{flex-wrap:wrap;gap:8px;margin:-2px 0 12px}
+    .table{padding:14px 12px 16px}
+    .who{margin-bottom:8px}
+    .hand{min-height:96px}
+    .divider-result{margin:12px 0}
     .card{width:64px;height:90px}.card .pip{font-size:34px}.card .corner .rank{font-size:16px}
-    .rank{flex-wrap:wrap;gap:8px}.btn{padding:11px 16px;letter-spacing:.12em}
+    .feedback{margin:10px 0 4px;min-height:24px}
+    .actions{margin-top:10px}.btn{padding:11px 16px;letter-spacing:.12em}
+    .cog{top:10px;right:10px;width:36px;height:36px}.cog svg{width:18px;height:18px}
     table.grid{font-size:10.5px}
     .opt-row{flex-direction:column;align-items:flex-start;gap:8px}
   }
@@ -159,54 +187,17 @@
 </head>
 <body>
 <div class="wrap">
+  <button class="cog" id="btn-options" aria-label="Options" title="Options">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+  </button>
   <header>
     <div class="title">Blackjack</div>
     <div class="subtitle">Strategy Trainer</div>
     <div class="rule"><span class="ln"></span><span class="dot">◆</span><span class="ln r"></span></div>
   </header>
-
-  <div class="stats">
-    <div class="stat"><div class="k">Bankroll</div><div class="v" id="s-bank">500</div></div>
-    <div class="stat"><div class="k">Skill</div><div class="v" id="s-score">0</div></div>
-    <div class="stat"><div class="k">Accuracy</div><div class="v" id="s-acc">—</div></div>
-    <div class="stat"><div class="k">Streak</div><div class="v" id="s-streak">0</div></div>
-    <div class="stat"><div class="k">Best</div><div class="v" id="s-best">0</div></div>
-  </div>
-
-  <div class="rank">
-    <span class="label" id="rank-label">Novice</span>
-    <span class="track"><span class="fill" id="rank-fill"></span></span>
-    <span class="next" id="rank-next"></span>
-  </div>
-
-  <div class="table">
-    <div class="lane">
-      <div class="who">Dealer</div>
-      <div class="total-wrap"><div class="hand" id="dealer-hand"></div><div class="total-badge" id="dealer-total" style="visibility:hidden">—</div></div>
-    </div>
-    <div class="divider"></div>
-    <div class="lane">
-      <div class="who">You</div>
-      <div class="player-area" id="player-area"></div>
-    </div>
-
-    <div class="feedback neutral" id="feedback">Press <b>Deal</b> to begin. You're scored on strategy, not luck.</div>
-    <div class="result" id="result"></div>
-
-    <div class="actions">
-      <button class="btn hit" id="btn-hit" disabled><span class="lbl">Hit</span><span class="key">H</span></button>
-      <button class="btn stand" id="btn-stand" disabled><span class="lbl">Stand</span><span class="key">S</span></button>
-      <button class="btn" id="btn-double" disabled><span class="lbl">Double</span><span class="key">D</span></button>
-      <button class="btn split" id="btn-split" disabled><span class="lbl">Split</span><span class="key">P</span></button>
-      <button class="btn surrender" id="btn-surrender" disabled style="display:none"><span class="lbl">Surrender</span><span class="key">R</span></button>
-      <button class="btn deal" id="btn-deal"><span class="lbl">Deal</span><span class="key">Space</span></button>
-    </div>
-  </div>
-
-  <div class="toggles">
-    <button class="btn ghost" id="btn-chart">Show Strategy</button>
-    <button class="btn ghost" id="btn-options">Options</button>
-  </div>
 
   <!-- Options panel -->
   <div class="panel" id="options-panel">
@@ -237,17 +228,59 @@
         <span class="opt-label">Live chart hint<small>Off = blind practice</small></span>
         <span class="seg" data-opt="hint"><button data-val="1" class="on">On</button><button data-val="0">Off</button></span>
       </div>
+      <div class="opt-row">
+        <span class="opt-label">Scroll to strategy on mistake<small>Jump to the chart when you misplay</small></span>
+        <span class="seg" data-opt="scrollMiss"><button data-val="1" class="on">On</button><button data-val="0">Off</button></span>
+      </div>
 
       <div class="opt-reset">
-        <button class="reset-btn" id="btn-reset">Reset bankroll &amp; stats</button>
-        <button class="reset-btn" id="btn-clear">Clear saved data</button>
+        <button class="reset-btn" id="btn-reset">Reset stats<small>Bankroll &amp; skill · keeps your settings</small></button>
+        <button class="reset-btn" id="btn-clear">Reset everything<small>Stats &amp; settings back to defaults</small></button>
       </div>
       <div class="chart-note" id="save-status" style="margin-top:14px"></div>
     </div>
   </div>
 
-  <!-- Strategy panel -->
-  <div class="panel" id="chart-panel">
+  <div class="stats" id="stats">
+    <div class="stat"><div class="k">Bankroll</div><div class="v" id="s-bank">500</div></div>
+    <div class="stat"><div class="k">Accuracy</div><div class="v" id="s-acc">—</div></div>
+    <div class="stat stat-primary"><div class="k">Skill</div><div class="v" id="s-score">0</div></div>
+    <div class="stat"><div class="k">Streak</div><div class="v" id="s-streak">0</div></div>
+    <div class="stat"><div class="k">Best</div><div class="v" id="s-best">0</div></div>
+  </div>
+
+  <div class="rank">
+    <span class="label" id="rank-label">Novice</span>
+    <span class="track"><span class="fill" id="rank-fill"></span></span>
+    <span class="next" id="rank-next"></span>
+  </div>
+
+  <div class="table">
+    <div class="lane">
+      <div class="who">Dealer</div>
+      <div class="total-wrap"><div class="hand" id="dealer-hand"></div><div class="total-badge" id="dealer-total" style="visibility:hidden">—</div></div>
+    </div>
+    <div class="divider-result"><span class="dline"></span><div class="result" id="result"></div><span class="dline"></span></div>
+    <div class="lane">
+      <div class="who">You</div>
+      <div class="player-area" id="player-area"></div>
+    </div>
+
+    <div class="feedback neutral" id="feedback">Press <b>Deal</b> to begin. You're scored on strategy, not luck.</div>
+
+    <div class="actions">
+      <button class="btn hit" id="btn-hit" disabled><span class="lbl">Hit</span><span class="key">H</span></button>
+      <button class="btn stand" id="btn-stand" disabled><span class="lbl">Stand</span><span class="key">S</span></button>
+      <button class="btn" id="btn-double" disabled><span class="lbl">Double</span><span class="key">D</span></button>
+      <button class="btn split" id="btn-split" disabled><span class="lbl">Split</span><span class="key">P</span></button>
+      <button class="btn surrender" id="btn-surrender" disabled style="display:none"><span class="lbl">Surrender</span><span class="key">R</span></button>
+      <button class="btn ghost" id="btn-hint" style="display:none"><span class="lbl">Hint</span><span class="key">?</span></button>
+      <button class="btn deal" id="btn-deal"><span class="lbl">Deal</span><span class="key">Space</span></button>
+    </div>
+  </div>
+
+  <!-- Strategy chart (always visible) -->
+  <div id="chart-panel">
     <div class="panel-inner">
       <div class="panel-head"><h3>Basic Strategy Chart</h3><p>Your hand (rows) vs. dealer upcard (columns) · live cell highlighted</p></div>
       <div class="chart-block"><h4>Hard Totals</h4><table class="grid" id="grid-hard"></table></div>
@@ -263,87 +296,20 @@
 
 </div>
 
+<script src="strategy.js"></script>
 <script>
+const {DEFAULT_RULES,rules,handValue,isPair,hitStand,shouldDouble,shouldSplit,surrenderTotal,shouldSurrender,optimalAction}=BJ;
 /* ============================================================ Card engine */
 const RANKS=[{r:'A',v:11},{r:'2',v:2},{r:'3',v:3},{r:'4',v:4},{r:'5',v:5},{r:'6',v:6},{r:'7',v:7},{r:'8',v:8},{r:'9',v:9},{r:'10',v:10},{r:'J',v:10},{r:'Q',v:10},{r:'K',v:10}];
 const SUITS=['♠','♥','♦','♣'];
 const DEALER_COLS=['2','3','4','5','6','7','8','9','10','A'];
 const MAX_HANDS=4;
 
-const rules={h17:false,das:true,surrender:false,decks:6,bet:10,hint:true};
-
 let shoe=[];
 function buildShoe(){shoe=[];for(let d=0;d<rules.decks;d++)for(const s of SUITS)for(const rk of RANKS)shoe.push({rank:rk.r,value:rk.v,suit:s,red:(s==='♥'||s==='♦')});
   for(let i=shoe.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shoe[i],shoe[j]]=[shoe[j],shoe[i]];}}
 function reshuffleThreshold(){return Math.floor(rules.decks*52*0.25);}
 function draw(){if(shoe.length<reshuffleThreshold())buildShoe();return shoe.pop();}
-
-function handValue(cards){let total=0,aces=0;for(const c of cards){total+=c.value;if(c.rank==='A')aces++;}
-  while(total>21&&aces>0){total-=10;aces--;}return{total,soft:(aces>0&&total<=21)};}
-function isPair(cards){return cards.length===2&&cards[0].value===cards[1].value;}
-
-/* ============================================================ Strategy (rule-aware) */
-function hitStand(total,soft,d){
-  if(soft){if(total>=19)return'stand';if(total===18)return d<=8?'stand':'hit';return'hit';}
-  if(total>=17)return'stand';
-  if(total>=13)return d<=6?'stand':'hit';
-  if(total===12)return(d>=4&&d<=6)?'stand':'hit';
-  return'hit';
-}
-function shouldDouble(total,soft,d){
-  if(soft){
-    if(total===13||total===14)return d===5||d===6;
-    if(total===15||total===16)return d>=4&&d<=6;
-    if(total===17||total===18)return d>=3&&d<=6;
-    if(total===19)return rules.h17&&d===6;           // A,8 vs 6 only on H17
-    return false;
-  }
-  if(total===9)return d>=3&&d<=6;
-  if(total===10)return d>=2&&d<=9;
-  if(total===11)return rules.h17?(d>=2&&d<=11):(d>=2&&d<=10);  // vs A only on H17
-  return false;
-}
-function shouldSplit(pv,d){
-  const das=rules.das;
-  switch(pv){
-    case 11:return true;
-    case 10:return false;
-    case 9:return [2,3,4,5,6,8,9].includes(d);
-    case 8:return true;
-    case 7:return d<=7;
-    case 6:return das?(d<=6):(d>=3&&d<=6);
-    case 5:return false;
-    case 4:return das?(d===5||d===6):false;
-    case 3:return das?(d<=7):(d>=4&&d<=7);
-    case 2:return das?(d<=7):(d>=4&&d<=7);
-  }
-  return false;
-}
-function surrenderTotal(total,d){
-  if(rules.h17){
-    if(total===16&&(d===9||d===10||d===11))return true;
-    if(total===15&&(d===10||d===11))return true;
-    if(total===17&&d===11)return true;
-    return false;
-  }
-  if(total===16&&(d===9||d===10||d===11))return true;
-  if(total===15&&d===10)return true;
-  return false;
-}
-function shouldSurrender(cards,d){
-  if(!rules.surrender||cards.length!==2)return false;
-  const{total,soft}=handValue(cards);
-  if(soft)return false;
-  if(isPair(cards)&&cards[0].value===8)return rules.h17&&d===11;   // 8,8 vs A on H17; else split
-  return surrenderTotal(total,d);
-}
-function optimalAction(cards,d,opts){
-  if(opts.canSur&&shouldSurrender(cards,d))return'surrender';
-  if(opts.canSpl&&isPair(cards)&&shouldSplit(cards[0].value,d))return'split';
-  const{total,soft}=handValue(cards);
-  if(opts.canDbl&&cards.length===2&&shouldDouble(total,soft,d))return'double';
-  return hitStand(total,soft,d);
-}
 
 /* ============================================================ State */
 const S={hands:[],active:0,dealer:[],phase:'idle',bank:500,score:0,correct:0,total:0,streak:0,best:0,baseBet:10,roundPerfect:true};
@@ -389,7 +355,7 @@ function renderPlayer(){
     const cardsHTML=h.cards.map(c=>cardHTML(c)).join('');
     let meta='';if(multi)meta+='Hand '+(i+1);if(active)meta+=(multi?' · ':'')+'▸ Playing';
     const badge=`<div class="total-badge">${(v.soft?'Soft ':'')+v.total+(v.total>21?'  ·  Bust':'')}</div>`;
-    let res='';if(S.phase==='done'&&h.outcome){const o=outcomeLabel(h.outcome,h.bet);if(o)res=`<span class="res ${o.cls}">${o.txt}</span>`;}
+    let res='';if(multi&&S.phase==='done'&&h.outcome){const o=outcomeLabel(h.outcome,h.bet);if(o)res=`<span class="res ${o.cls}">${o.txt}</span>`;}
     const metaLine=(meta||res)?`<div class="hand-meta">${meta}${res}</div>`:'';
     return`<div class="${cls}"><div class="hand">${cardsHTML}</div>${badge}${metaLine}</div>`;
   }).join('');
@@ -412,10 +378,18 @@ function setButtons(){
   show($('btn-double'),canDoubleVal(h));
   show($('btn-split'),canSplitVal(h));
   show($('btn-surrender'),canSurrenderVal(h));
+  show($('btn-hint'),live);
   show($('btn-deal'),S.phase!=='player');
   $('btn-deal').querySelector('.lbl').textContent=(S.phase==='done')?'Next Hand':'Deal';
 }
 function feedback(html,kind){const f=$('feedback');f.className='feedback '+kind;f.innerHTML=html;}
+function showHint(){
+  const h=activeHand();if(S.phase!=='player'||!h||h.done||h.fromAceSplit)return;
+  const d=S.dealer[0].value;
+  const opt=optimalAction(h.cards,d,{canDbl:canDoubleVal(h),canSpl:canSplitVal(h),canSur:canSurrenderVal(h)});
+  const prefix=S.hands.length>1?('Hand '+(S.active+1)+': '):'';
+  feedback('<span class="tag">Hint</span> — '+prefix+'optimal play is <b>'+opt.toUpperCase()+'</b> on '+describe(h.cards,d)+'.','neutral');
+}
 function result(html,kind){const r=$('result');r.className='result '+(kind||'');r.innerHTML=html||'';}
 function render(reveal){renderDealer(!!reveal);renderPlayer();setButtons();highlight();}
 
@@ -456,14 +430,17 @@ function buildCharts(){
   $('chart-note').innerHTML='<b>D</b> = double else hit · <b>Ds</b> = double else stand · <b>P</b> = split · <b>R</b> = surrender.<br>'+
     'Dealer '+(rules.h17?'hits':'stands on')+' soft 17 · double after split '+(rules.das?'allowed':'not allowed')+' · late surrender '+(rules.surrender?'on':'off')+' · '+rules.decks+' decks · resplit to 4 hands · split aces draw one card.';
 }
+function chartCellFor(h){
+  const d=S.dealer[0].value;const col=DEALER_COLS[d===11?9:d-2];
+  if(canSplitVal(h))return document.querySelector(`td[data-pv="${h.cards[0].value}"][data-col="${col}"]`);
+  const{total,soft}=handValue(h.cards);
+  return document.querySelector(`td[data-soft="${soft?1:0}"][data-total="${total}"][data-col="${col}"]`);
+}
 function highlight(){
   document.querySelectorAll('td.hl').forEach(e=>e.classList.remove('hl'));
   if(!rules.hint||S.phase!=='player')return;
   const h=activeHand();if(!h||h.done||h.fromAceSplit)return;
-  const d=S.dealer[0].value;const col=DEALER_COLS[d===11?9:d-2];let cell=null;
-  if(canSplitVal(h)){cell=document.querySelector(`td[data-pv="${h.cards[0].value}"][data-col="${col}"]`);}
-  else{const{total,soft}=handValue(h.cards);cell=document.querySelector(`td[data-soft="${soft?1:0}"][data-total="${total}"][data-col="${col}"]`);}
-  if(cell)cell.classList.add('hl');
+  const cell=chartCellFor(h);if(cell)cell.classList.add('hl');
 }
 
 /* ============================================================ Decision scoring */
@@ -474,6 +451,7 @@ function describe(cards,d){
   const{total,soft}=handValue(cards);return(soft?'soft ':'hard ')+total+' vs '+dl;
 }
 function score(action,h){
+  document.querySelectorAll('td.hl-miss').forEach(e=>e.classList.remove('hl-miss'));
   const d=S.dealer[0].value;
   const opt=optimalAction(h.cards,d,{canDbl:canDoubleVal(h),canSpl:canSplitVal(h),canSur:canSurrenderVal(h)});
   S.total++;
@@ -485,8 +463,10 @@ function score(action,h){
     renderStats(['s-score','s-streak','s-acc',...(S.streak===S.best?['s-best']:[])]);
   }else{
     S.streak=0;S.roundPerfect=false;
-    feedback('<span class="tag">✗ Not optimal</span> — '+prefix+'best play was <b>'+opt.toUpperCase()+'</b>.<small>'+capitalize(desc)+' → '+opt.toUpperCase()+'</small>','bad');
+    feedback('<span class="tag">✗ Not optimal</span> — '+prefix+'best play on '+desc+' was <b>'+opt.toUpperCase()+'</b>.','bad');
     renderStats(['s-streak','s-acc']);
+    const miss=chartCellFor(h);if(miss)miss.classList.add('hl-miss');
+    if(rules.scrollMiss)$('chart-panel').scrollIntoView({behavior:'smooth',block:'start'});
   }
   save();
 }
@@ -496,6 +476,7 @@ function newHand(cards,extra={}){return Object.assign({cards,bet:S.baseBet,done:
 function startRound(){
   const h=newHand([draw(),draw()]);
   S.hands=[h];S.active=0;S.dealer=[draw(),draw()];S.phase='player';S.roundPerfect=true;result('','');
+  document.querySelectorAll('td.hl-miss').forEach(e=>e.classList.remove('hl-miss'));
   const p=handValue(h.cards),dBJ=handValue(S.dealer).total===21,pBJ=p.total===21;
   if(pBJ||dBJ){
     S.phase='done';
@@ -504,7 +485,7 @@ function startRound(){
     else{h.outcome='lose';S.bank-=S.baseBet;feedback('Dealer was dealt a natural.','neutral');result('Dealer Blackjack  −'+S.baseBet,'lose');}
     renderStats(['s-bank']);render(true);save();return;
   }
-  feedback('Your move. <span style="opacity:.55">'+(rules.hint?'(open the strategy chart for a live hint)':'(hint off — blind practice)')+'</span>','neutral');
+  feedback('','neutral');
   renderStats();render(false);
 }
 function seekActionable(){
@@ -550,13 +531,11 @@ function dealerPlayAndResolve(){
   const sign=net>0?'  +'+net:(net<0?'  −'+Math.abs(net):'');
   const kind=net>0?'win':(net<0?'lose':'push');
   result((net>0?'Round Won':net<0?'Round Lost':'Push')+sign,kind);
-  if(S.roundPerfect){$('feedback').innerHTML+='<small style="color:var(--brass-lite)">Whole round played optimally ✦</small>';}
   renderStats(['s-bank']);render(true);save();
 }
 
 /* ============================================================ Persistence (localStorage) */
 const SAVE_KEY='bj-trainer-v1';
-const DEFAULT_RULES={h17:false,das:true,surrender:false,decks:6,bet:10,hint:true};
 let storageOK=false;
 (function(){try{const t='__bj_probe__';localStorage.setItem(t,'1');localStorage.removeItem(t);storageOK=true;}catch(e){storageOK=false;}})();
 
@@ -564,7 +543,7 @@ function save(){
   if(!storageOK)return;
   try{localStorage.setItem(SAVE_KEY,JSON.stringify({
     stats:{bank:S.bank,score:S.score,correct:S.correct,total:S.total,streak:S.streak,best:S.best},
-    rules:{h17:rules.h17,das:rules.das,surrender:rules.surrender,decks:rules.decks,bet:rules.bet,hint:rules.hint}
+    rules:{h17:rules.h17,das:rules.das,surrender:rules.surrender,decks:rules.decks,bet:rules.bet,hint:rules.hint,scrollMiss:rules.scrollMiss}
   }));}catch(e){}
 }
 function load(){
@@ -574,7 +553,7 @@ function load(){
     const d=JSON.parse(raw);
     if(d.stats){for(const f of ['bank','score','correct','total','streak','best'])if(typeof d.stats[f]==='number')S[f]=d.stats[f];}
     if(d.rules){
-      for(const f of ['h17','das','surrender','hint'])if(typeof d.rules[f]==='boolean')rules[f]=d.rules[f];
+      for(const f of ['h17','das','surrender','hint','scrollMiss'])if(typeof d.rules[f]==='boolean')rules[f]=d.rules[f];
       if([4,6,8].includes(d.rules.decks))rules.decks=d.rules.decks;
       if([5,10,25].includes(d.rules.bet))rules.bet=d.rules.bet;
     }
@@ -637,22 +616,19 @@ $('btn-stand').addEventListener('click',onStand);
 $('btn-double').addEventListener('click',onDouble);
 $('btn-split').addEventListener('click',onSplit);
 $('btn-surrender').addEventListener('click',onSurrender);
+$('btn-hint').addEventListener('click',showHint);
 
-function togglePanel(panelId,btn,label){
-  const p=$(panelId),open=!p.classList.contains('open');
-  // close the other panel for tidiness
-  ['chart-panel','options-panel'].forEach(id=>{if(id!==panelId)$(id).classList.remove('open');});
-  $('btn-chart').textContent='Show Strategy';$('btn-options').textContent='Options';
-  p.classList.toggle('open',open);btn.textContent=open?label[1]:label[0];
-  if(open&&panelId==='chart-panel')highlight();
+function toggleOptions(force){
+  const p=$('options-panel'),open=(force===undefined)?!p.classList.contains('open'):force;
+  p.classList.toggle('open',open);$('btn-options').classList.toggle('on',open);
 }
-$('btn-chart').addEventListener('click',()=>togglePanel('chart-panel',$('btn-chart'),['Show Strategy','Hide Strategy']));
-$('btn-options').addEventListener('click',()=>togglePanel('options-panel',$('btn-options'),['Options','Close Options']));
+$('btn-options').addEventListener('click',()=>toggleOptions());
 
 document.addEventListener('keydown',e=>{
   if(e.repeat)return;const k=e.key.toLowerCase();
+  if(k==='escape'){toggleOptions(false);return;}
   if(k==='h')onHit();else if(k==='s')onStand();else if(k==='d')onDouble();
-  else if(k==='p')onSplit();else if(k==='r')onSurrender();
+  else if(k==='p')onSplit();else if(k==='r')onSurrender();else if(k==='?')showHint();
   else if(k===' '||k==='enter'){if(S.phase!=='player'){e.preventDefault();startRound();}}
 });
 
