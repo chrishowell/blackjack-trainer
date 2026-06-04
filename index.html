@@ -717,7 +717,7 @@ function startRound(){
     if(pBJ&&dBJ){h.outcome='push';feedback('Both dealt naturals.','neutral');result('Push','push');}
     else if(pBJ){h.outcome='blackjack';S.bank+=Math.round(S.baseBet*1.5);feedback('Natural blackjack — no decision needed.','neutral');result('Blackjack!  +$'+Math.round(S.baseBet*1.5),'win');}
     else{h.outcome='lose';S.bank-=S.baseBet;feedback('Dealer was dealt a natural.','neutral');result('Dealer Blackjack  −$'+S.baseBet,'lose');}
-    renderStats(['s-bank'].concat(shuffled?['s-cards']:[]).concat(betStats));render(dBJ);save();return;
+    renderStats(['s-bank'].concat(shuffled?['s-cards']:[]).concat(betStats));render(true);save();return;
   }
   const shuf=shuffled?'<span style="color:var(--brass-lite)">✦ Shoe reshuffled.</span> ':'';
   if(bet)feedback(shuf+bet.msg,bet.kind); else feedback(shuf.trim(),'neutral');
@@ -747,7 +747,7 @@ function onSplit(){const h=activeHand();if(!canSplitVal(h))return;score('split',
   S.hands.splice(S.active,1,h1,h2);proceed();}
 function onSurrender(){const h=activeHand();if(!canSurrenderVal(h))return;score('surrender',h);
   h.outcome='surrender';h.done=true;S.phase='done';S.bank-=Math.round(h.bet/2);
-  result('Surrender  −$'+Math.round(h.bet/2),'lose');renderStats(['s-bank']);render(false);save();}
+  result('Surrender  −$'+Math.round(h.bet/2),'lose');renderStats(['s-bank']);render(true);save();}
 function dealerShouldHit(){const v=handValue(S.dealer);if(v.total<17)return true;if(v.total===17&&v.soft&&rules.h17)return true;return false;}
 function dealerPlayAndResolve(){
   S.phase='done';
@@ -766,7 +766,7 @@ function dealerPlayAndResolve(){
   const sign=net>0?'  +$'+net:(net<0?'  −$'+Math.abs(net):'');
   const kind=net>0?'win':(net<0?'lose':'push');
   result((net>0?'Round Won':net<0?'Round Lost':'Push')+sign,kind);
-  renderStats(['s-bank']);render(anyAlive);save();
+  renderStats(['s-bank']);render(true);save();
 }
 
 /* ============================================================ Persistence (localStorage) */
